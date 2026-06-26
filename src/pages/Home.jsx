@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Star, Heart, Send, ShieldCheck, Sparkles, Award, Gem, Quote, VolumeX, Volume2, Maximize2, Share2, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Star, Heart, Send, ShieldCheck, Sparkles, Award, Gem, Quote, VolumeX, Volume2, Maximize2, Share2, ChevronLeft, ChevronRight, Gift } from "lucide-react";
 import { getProducts, getReviews } from "../services/db";
 import { ProductCard } from "../components/ProductCard";
 import { ProductGridSkeleton } from "../components/LoadingSkeleton";
@@ -57,8 +57,8 @@ export const Home = ({ addToast }) => {
       try {
         const allProducts = await getProducts();
         setNewArrivals(allProducts.filter((p) => p.isNew).slice(0, 3));
-        setBestSellers(allProducts.filter((p) => p.isBestSeller).slice(0, 5));
-        setTrendingProducts(allProducts.filter((p) => p.isNew).slice(0, 5));
+        setBestSellers(allProducts.filter((p) => p.isBestSeller).slice(0, 10));
+        setTrendingProducts(allProducts.filter((p) => p.isNew).slice(0, 10));
         
         const allReviews = await getReviews();
         setReviews(allReviews.slice(0, 4));
@@ -230,7 +230,7 @@ export const Home = ({ addToast }) => {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="w-full relative overflow-hidden bg-stone-950 border border-gold-500/25 p-[18px] sm:p-9 lg:p-12 gold-shadow-lg rounded-[2%]"
+            className="w-full relative overflow-hidden bg-stone-950 border border-gold-500/25 py-8 px-[18px] sm:p-9 lg:p-12 min-h-[190px] sm:min-h-0 flex flex-col justify-center gold-shadow-lg rounded-[2%]"
           >
             {/* Background Images specifically on this container div with cross-fade */}
             {heroImages.map((img, idx) => (
@@ -277,28 +277,28 @@ export const Home = ({ addToast }) => {
               {/* Horizontal Trust Badges: Hidden on mobile to save space */}
               <div className="pt-6 hidden md:grid grid-cols-4 gap-3 max-w-3xl border-t border-stone-800/30 select-none">
                 <div className="flex items-center gap-2 bg-stone-950/70 border border-gold-500/10 p-2 sm:p-2.5 rounded-2xl backdrop-blur-md">
-                  <ShieldCheck className="text-gold-400 w-4.5 h-4.5 shrink-0" />
+                  <ShieldCheck className="text-gold-400 w-4 h-4 shrink-0" />
                   <div>
                     <h4 className="text-[9px] uppercase font-bold tracking-wider text-white font-sans">Good Quality</h4>
                     <p className="text-[8px] text-stone-400 font-sans">Certified 22K Gold</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 bg-stone-950/70 border border-gold-500/10 p-2 sm:p-2.5 rounded-2xl backdrop-blur-md">
-                  <Sparkles className="text-gold-400 w-4.5 h-4.5 shrink-0" />
+                  <Sparkles className="text-gold-400 w-4 h-4 shrink-0" />
                   <div>
                     <h4 className="text-[9px] uppercase font-bold tracking-wider text-white font-sans">Fresh Designs</h4>
                     <p className="text-[8px] text-stone-400 font-sans">Modern Heritage</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 bg-stone-950/70 border border-gold-500/10 p-2 sm:p-2.5 rounded-2xl backdrop-blur-md">
-                  <Gem className="text-gold-400 w-4.5 h-4.5 shrink-0" />
+                  <Gem className="text-gold-400 w-4 h-4 shrink-0" />
                   <div>
                     <h4 className="text-[9px] uppercase font-bold tracking-wider text-white font-sans">Suitable For All</h4>
                     <p className="text-[8px] text-stone-400 font-sans">Everyday & Bridal</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 bg-stone-950/70 border border-gold-500/10 p-2 sm:p-2.5 rounded-2xl backdrop-blur-md">
-                  <Award className="text-gold-400 w-4.5 h-4.5 shrink-0" />
+                  <Award className="text-gold-400 w-4 h-4 shrink-0" />
                   <div>
                     <h4 className="text-[9px] uppercase font-bold tracking-wider text-white font-sans">100% Certified</h4>
                     <p className="text-[8px] text-stone-400 font-sans">BIS Hallmarked</p>
@@ -388,14 +388,14 @@ export const Home = ({ addToast }) => {
         </div>
 
         {loading ? (
-          <ProductGridSkeleton count={3} />
+          <ProductGridSkeleton count={6} />
         ) : (
           <>
             <div className="grid grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4">
               {bestSellers.map((product, index) => (
                 <div
                   key={product.id}
-                  className={index >= 3 ? "hidden lg:block" : ""}
+                  className={index >= 6 ? "hidden lg:block" : index >= 3 && index < 6 ? "block" : ""}
                 >
                   <ProductCard product={product} addToast={addToast} compact={true} />
                 </div>
@@ -430,14 +430,14 @@ export const Home = ({ addToast }) => {
           </div>
 
           {loading ? (
-            <ProductGridSkeleton count={3} />
+            <ProductGridSkeleton count={6} />
           ) : (
             <>
               <div className="grid grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4">
                 {trendingProducts.map((product, index) => (
                   <div
                     key={product.id}
-                    className={index >= 3 ? "hidden lg:block" : ""}
+                    className={index >= 6 ? "hidden lg:block" : index >= 3 && index < 6 ? "block" : ""}
                   >
                     <ProductCard product={product} addToast={addToast} compact={true} />
                   </div>
@@ -472,8 +472,8 @@ export const Home = ({ addToast }) => {
             <div className="h-0.5 w-16 bg-gold-500 mx-auto mt-2"></div>
           </div>
 
-          {/* Bento Grid: 2 Columns on Mobile, 4 Columns on Desktop (35% height reduction) */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 auto-rows-[60px] sm:auto-rows-[120px] md:auto-rows-[140px]">
+          {/* Bento Grid: 2 Columns on Mobile, 4 Columns on Desktop */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 auto-rows-[110px] sm:auto-rows-[120px] md:auto-rows-[140px]">
             
             {/* Box 1: Necklace Sets */}
             <motion.div
@@ -582,32 +582,64 @@ export const Home = ({ addToast }) => {
                   Bespoke Design Studio
                 </h3>
                 <p className="text-[10px] text-stone-400 font-light leading-relaxed font-sans">
-                  Co-create custom heritage heirlooms with our lead designers. Sketches & 3D renders.
+                  Co-create your dream jewellery with our designers. Custom sketches & 3D renders.
                 </p>
               </div>
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/919876543210?text=Hi!%20I%20would%20like%20to%20consult%20about%20a%20custom%20jewellery%20design."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[10px] text-gold-400 hover:text-gold-300 font-bold tracking-wider uppercase inline-flex items-center gap-1 mt-2 font-sans"
+                className="inline-flex items-center gap-2 mt-3 bg-emerald-500 hover:bg-emerald-600 text-white py-1.5 px-3 rounded-xl text-[10px] font-semibold tracking-wide transition-all duration-300 shadow-md w-fit font-sans"
               >
-                Consult on WhatsApp
-                <ArrowRight size={10} />
+                {/* WhatsApp SVG Icon */}
+                <svg viewBox="0 0 32 32" width="13" height="13" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16.004 2.667C8.64 2.667 2.667 8.64 2.667 16c0 2.347.635 4.64 1.84 6.653L2.667 29.333l6.88-1.8A13.267 13.267 0 0 0 16.004 29.333c7.36 0 13.329-5.973 13.329-13.333S23.364 2.667 16.004 2.667zm0 24a10.613 10.613 0 0 1-5.413-1.48l-.387-.227-4.08 1.067 1.093-3.973-.253-.413A10.587 10.587 0 0 1 5.333 16c0-5.88 4.787-10.667 10.667-10.667S26.667 10.12 26.667 16 21.88 26.667 16 26.667zm5.84-7.973c-.32-.16-1.893-.933-2.187-1.04-.293-.107-.506-.16-.72.16-.213.32-.827 1.04-1.013 1.253-.187.213-.373.24-.693.08-.32-.16-1.347-.493-2.56-1.573-.947-.84-1.587-1.88-1.773-2.2-.187-.32-.02-.493.14-.653.144-.144.32-.373.48-.56.16-.187.213-.32.32-.533.107-.213.053-.4-.027-.56-.08-.16-.72-1.733-.987-2.373-.26-.627-.52-.533-.72-.547-.187-.013-.4-.013-.613-.013-.213 0-.56.08-.853.4-.293.32-1.12 1.093-1.12 2.667s1.147 3.093 1.307 3.307c.16.213 2.253 3.44 5.467 4.827.763.333 1.36.533 1.827.68.767.24 1.467.207 2.013.127.613-.093 1.893-.773 2.16-1.52.267-.747.267-1.387.187-1.52-.08-.133-.293-.213-.613-.373z"/>
+                </svg>
+                Chat on WhatsApp
               </a>
             </div>
 
-            {/* Box 6: Flagship Store (Hidden on mobile) */}
-            <div className="hidden md:flex md:col-span-1 md:row-span-1 rounded-2xl p-4 border border-gold-900/35 bg-stone-900 text-left flex flex-col justify-between luxury-glow-hover">
-              <div className="space-y-0.5">
-                <h3 className="font-serif text-sm font-bold text-white leading-tight">Flagship Boutique</h3>
-                <p className="text-[9px] text-stone-300 font-light leading-relaxed font-sans">MG Road, Bangalore. Private bridal Suites.</p>
+            {/* Box 6: Gift Card — Send a Gift */}
+            <div className="hidden md:flex md:col-span-1 md:row-span-1 rounded-2xl border border-gold-400/30 text-left flex-col justify-between overflow-hidden relative group cursor-pointer"
+              style={{ background: "linear-gradient(135deg, #1c1008 0%, #3d2205 40%, #78450f 80%, #c47f17 100%)" }}
+            >
+              {/* Decorative ribbon corner */}
+              <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden z-20 pointer-events-none">
+                <div className="absolute top-3 right-[-20px] rotate-45 bg-gold-500 text-stone-950 text-[7px] font-bold uppercase tracking-widest w-20 text-center py-0.5 shadow-md">
+                  Gift
+                </div>
               </div>
-              <Link
-                to="/contact"
-                className="bg-stone-950 text-white hover:bg-gold-500 hover:text-stone-950 py-2 px-3 rounded-lg text-[9px] uppercase tracking-wider font-bold transition-all duration-300 text-center shadow-sm font-sans border border-gold-500/25"
-              >
-                Book Boutique Visit
-              </Link>
+              {/* Glowing orb accent */}
+              <div className="absolute bottom-[-20px] left-[-20px] w-28 h-28 rounded-full bg-gold-500/20 blur-2xl group-hover:bg-gold-400/30 transition-all duration-700"></div>
+              <div className="absolute top-[-10px] right-8 w-16 h-16 rounded-full bg-amber-400/10 blur-xl"></div>
+
+              <div className="relative z-10 p-4 pb-4 flex flex-col gap-3 h-full pt-5">
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-7 h-7 rounded-full bg-gold-500/20 border border-gold-400/30 flex items-center justify-center shrink-0">
+                      <Gift size={14} className="text-gold-400" />
+                    </div>
+                    <span className="text-gold-400 font-semibold tracking-[0.2em] uppercase text-[8px] font-sans">For Someone Special</span>
+                  </div>
+                  <h3 className="font-serif text-sm font-bold text-white leading-snug mt-1">
+                    Send a Gift 🎁
+                  </h3>
+                  <p className="text-[9px] text-stone-300 font-light leading-relaxed font-sans">
+                    Surprise a loved one with handcrafted gold & diamond jewellery — beautifully gift-wrapped.
+                  </p>
+                </div>
+
+                <div className="mt-auto">
+                  <Link
+                    to="/collections"
+                    className="inline-flex items-center gap-1.5 bg-gold-500 hover:bg-gold-400 text-stone-950 py-1.5 px-3 rounded-lg text-[9px] uppercase tracking-wider font-bold transition-colors duration-300 shadow-md font-sans w-fit"
+                  >
+                    <Gift size={10} />
+                    Shop Gift Ideas
+                    <ArrowRight size={9} />
+                  </Link>
+                </div>
+              </div>
             </div>
 
             {/* Box 7: Quality Assurance (Hidden on mobile) */}

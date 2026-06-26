@@ -44,11 +44,18 @@ export const MobileBottomNav = () => {
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-luxury-black/95 backdrop-blur-md border-t border-gold-200/25 dark:border-stone-850/40 py-2 px-6 flex justify-between items-center shadow-lg transition-colors duration-300 font-sans">
       {navItems.map((item) => {
-        // Handle active class
-        const isActive =
-          item.path === "/"
-            ? currentPath === "/"
-            : currentPath.startsWith(item.path.split("?")[0]);
+        const isActive = (() => {
+          if (item.path === "/") {
+            return currentPath === "/";
+          }
+          if (item.label === "Wishlist") {
+            return currentPath === "/collections" && location.search.includes("filter=wishlist");
+          }
+          if (item.label === "Explore") {
+            return currentPath === "/collections" && !location.search.includes("filter=wishlist");
+          }
+          return currentPath.startsWith(item.path.split("?")[0]);
+        })();
 
         return (
           <Link

@@ -68,11 +68,11 @@ export const ProductCard = ({ product, addToast, compact = false }) => {
       <button
         onClick={handleWishlistToggle}
         className={`absolute z-10 rounded-full flex items-center justify-center text-gray-500 hover:text-red-500 dark:text-gray-300 transition-colors shadow-md backdrop-blur-sm cursor-pointer ${
-          compact ? "top-1 right-1 w-5 h-5 bg-white/90 dark:bg-stone-900/90" : "top-2 right-2 sm:top-4 sm:right-4 w-7 h-7 sm:w-9 sm:h-9 bg-white/80 dark:bg-stone-900/80"
+          compact ? "top-1 right-1 w-7 h-7 bg-white/90 dark:bg-stone-900/90" : "top-2 right-2 sm:top-4 sm:right-4 w-10 h-10 sm:w-[54px] sm:h-[54px] bg-white/80 dark:bg-stone-900/80"
         }`}
         aria-label="Toggle Wishlist"
       >
-        <Heart size={compact ? 9 : 14} className={isWishlisted ? "fill-red-500 text-red-500" : ""} />
+        <Heart size={compact ? 13 : 21} className={isWishlisted ? "fill-red-500 text-red-500" : ""} />
       </button>
 
       {/* Image Container with Zoom effect */}

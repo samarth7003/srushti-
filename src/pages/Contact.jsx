@@ -50,16 +50,16 @@ export const Contact = ({ addToast }) => {
         {/* Contact info grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Left panel: Info cards */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="bg-white dark:bg-luxury-charcoal p-6 rounded-2xl border border-gold-100/50 dark:border-stone-850/40 shadow-sm space-y-6">
-              <h3 className="font-serif text-xl font-bold text-luxury-black dark:text-white border-b border-gold-100/10 dark:border-stone-800/20 pb-3">
-                Boutique Channels
+          <div className="lg:col-span-5">
+            <div className="bg-white dark:bg-luxury-charcoal p-4 sm:p-5 rounded-2xl border border-gold-100/50 dark:border-stone-850/40 shadow-sm space-y-4 h-full">
+              <h3 className="font-serif text-xl font-bold text-luxury-black dark:text-white border-b border-gold-100/10 dark:border-stone-800/20 pb-2">
+                Contact Us
               </h3>
 
-              <div className="space-y-4 text-xs font-light text-gray-700 dark:text-gray-300">
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-gold-50 dark:bg-stone-900 rounded-xl text-gold-500 shrink-0">
-                    <Phone size={18} />
+              <div className="space-y-3 text-xs font-light text-gray-700 dark:text-gray-300">
+                <div className="flex items-start gap-3">
+                  <div className="p-1.5 bg-gold-50 dark:bg-stone-900 rounded-xl text-gold-500 shrink-0">
+                    <Phone size={16} />
                   </div>
                   <div>
                     <h4 className="font-semibold text-sm text-luxury-black dark:text-white">Call Us Directly</h4>
@@ -68,9 +68,9 @@ export const Contact = ({ addToast }) => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-gold-50 dark:bg-stone-900 rounded-xl text-emerald-500 shrink-0">
-                    <MessageSquare size={18} />
+                <div className="flex items-start gap-3">
+                  <div className="p-1.5 bg-gold-50 dark:bg-stone-900 rounded-xl text-emerald-500 shrink-0">
+                    <MessageSquare size={16} />
                   </div>
                   <div>
                     <h4 className="font-semibold text-sm text-luxury-black dark:text-white">WhatsApp Chat</h4>
@@ -79,16 +79,16 @@ export const Contact = ({ addToast }) => {
                       href={getWhatsAppChatUrl()}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-emerald-500 dark:text-emerald-400 font-semibold hover:underline block mt-1"
+                      className="text-emerald-500 dark:text-emerald-400 font-semibold hover:underline block mt-0.5"
                     >
                       Click to Chat Now &rarr;
                     </a>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-gold-50 dark:bg-stone-900 rounded-xl text-gold-500 shrink-0">
-                    <Mail size={18} />
+                <div className="flex items-start gap-3">
+                  <div className="p-1.5 bg-gold-50 dark:bg-stone-900 rounded-xl text-gold-500 shrink-0">
+                    <Mail size={16} />
                   </div>
                   <div>
                     <h4 className="font-semibold text-sm text-luxury-black dark:text-white">Boutique Email</h4>
@@ -97,9 +97,9 @@ export const Contact = ({ addToast }) => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-gold-50 dark:bg-stone-900 rounded-xl text-gold-500 shrink-0">
-                    <MapPin size={18} />
+                <div className="flex items-start gap-3">
+                  <div className="p-1.5 bg-gold-50 dark:bg-stone-900 rounded-xl text-gold-500 shrink-0">
+                    <MapPin size={16} />
                   </div>
                   <div>
                     <h4 className="font-semibold text-sm text-luxury-black dark:text-white">Flagship Showroom</h4>
@@ -107,9 +107,9 @@ export const Contact = ({ addToast }) => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-gold-50 dark:bg-stone-900 rounded-xl text-gold-500 shrink-0">
-                    <Clock size={18} />
+                <div className="flex items-start gap-3">
+                  <div className="p-1.5 bg-gold-50 dark:bg-stone-900 rounded-xl text-gold-500 shrink-0">
+                    <Clock size={16} />
                   </div>
                   <div>
                     <h4 className="font-semibold text-sm text-luxury-black dark:text-white">Business Hours</h4>
@@ -123,14 +123,14 @@ export const Contact = ({ addToast }) => {
 
           {/* Right panel: Contact Form */}
           <div className="lg:col-span-7">
-            <div className="bg-white dark:bg-luxury-charcoal p-6 sm:p-8 rounded-2xl border border-gold-100/50 dark:border-stone-850/40 shadow-sm space-y-6">
-              <h3 className="font-serif text-xl font-bold text-luxury-black dark:text-white border-b border-gold-100/10 dark:border-stone-800/20 pb-3">
+            <div className="bg-white dark:bg-luxury-charcoal p-4 sm:p-5 rounded-2xl border border-gold-100/50 dark:border-stone-850/40 shadow-sm space-y-4 h-full">
+              <h3 className="font-serif text-xl font-bold text-luxury-black dark:text-white border-b border-gold-100/10 dark:border-stone-800/20 pb-2">
                 Send a Message
               </h3>
 
-              <form onSubmit={handleContactSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
+              <form onSubmit={handleContactSubmit} className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-0.5">
                     <label className="text-[10px] font-semibold text-gray-500 uppercase">Your Name *</label>
                     <input
                       type="text"
@@ -138,10 +138,10 @@ export const Contact = ({ addToast }) => {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Enter name"
-                      className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
+                      className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
                     />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-0.5">
                     <label className="text-[10px] font-semibold text-gray-500 uppercase">Email Address *</label>
                     <input
                       type="email"
@@ -149,25 +149,25 @@ export const Contact = ({ addToast }) => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter email"
-                      className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
+                      className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
                     />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-0.5">
                     <label className="text-[10px] font-semibold text-gray-500 uppercase">Mobile (Optional)</label>
                     <input
                       type="tel"
                       value={mobile}
                       onChange={(e) => setMobile(e.target.value)}
                       placeholder="10-digit number"
-                      className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
+                      className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
                     />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-0.5">
                     <label className="text-[10px] font-semibold text-gray-500 uppercase">Subject</label>
                     <select
                       value={subject}
                       onChange={(e) => setSubject(e.target.value)}
-                      className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white font-medium"
+                      className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white font-medium"
                     >
                       <option value="General Enquiry">General Enquiry</option>
                       <option value="Custom Order Consult">Bespoke Design / Custom Consultation</option>
@@ -177,21 +177,21 @@ export const Contact = ({ addToast }) => {
                   </div>
                 </div>
 
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   <label className="text-[10px] font-semibold text-gray-500 uppercase">Your Message *</label>
                   <textarea
                     required
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Details of your request..."
-                    className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white min-h-[120px]"
+                    className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white min-h-[75px]"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-gold-500 hover:bg-gold-600 disabled:bg-gold-200 text-stone-950 font-bold uppercase tracking-wider py-4 rounded-xl text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full bg-gold-500 hover:bg-gold-600 disabled:bg-gold-200 text-stone-950 font-bold uppercase tracking-wider py-2.5 rounded-xl text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {submitting ? "Sending..." : "Submit Message"}
                   <Send size={12} />

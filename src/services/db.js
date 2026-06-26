@@ -17,19 +17,25 @@ const initLocalDb = () => {
   } else {
     try {
       const parsed = JSON.parse(existingProducts);
+      // Always merge new products from INITIAL_PRODUCTS that don't exist in localStorage yet
+      const existingIds = new Set(parsed.map(p => p.id));
+      const newProducts = INITIAL_PRODUCTS.filter(p => !existingIds.has(p.id));
+      
       const hasSvg = parsed.some(p => 
         p.images && p.images.some(img => typeof img === "string" && (img.includes("/images/products/") || img.endsWith(".svg")))
       );
+
       if (hasSvg) {
-        // Upgrade existing products with the new high-quality Unsplash image URLs
+        // Upgrade existing products with the new high-quality Unsplash image URLs + add new ones
         const upgraded = parsed.map(p => {
           const match = INITIAL_PRODUCTS.find(ip => ip.id === p.id);
-          if (match) {
-            return { ...p, images: match.images };
-          }
+          if (match) return { ...p, images: match.images };
           return p;
         });
-        localStorage.setItem("srushti_products", JSON.stringify(upgraded));
+        localStorage.setItem("srushti_products", JSON.stringify([...upgraded, ...newProducts]));
+      } else if (newProducts.length > 0) {
+        // Add any new products to existing list
+        localStorage.setItem("srushti_products", JSON.stringify([...parsed, ...newProducts]));
       }
     } catch (e) {
       localStorage.setItem("srushti_products", JSON.stringify(INITIAL_PRODUCTS));
