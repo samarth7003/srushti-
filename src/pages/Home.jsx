@@ -1,11 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Star, Heart, Send, ShieldCheck, Sparkles, Award, Gem, Quote, VolumeX, Volume2, Maximize2, Share2, ChevronLeft, ChevronRight, Gift } from "lucide-react";
+import {
+  ArrowRight, Star, ShieldCheck, Sparkles, Award, Gem, Quote,
+  VolumeX, Volume2, Maximize2, Share2, ChevronLeft, ChevronRight,
+  Gift, Truck, RotateCcw, BadgeCheck, MapPin, Heart
+} from "lucide-react";
 import { getProducts, getReviews } from "../services/db";
 import { ProductCard } from "../components/ProductCard";
 import { ProductGridSkeleton } from "../components/LoadingSkeleton";
 import { motion, AnimatePresence } from "framer-motion";
 
+/* ─────────────────────────────────────────────────────────
+   HOME PAGE
+───────────────────────────────────────────────────────── */
 export const Home = ({ addToast }) => {
   const [newArrivals, setNewArrivals] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
@@ -14,90 +21,88 @@ export const Home = ({ addToast }) => {
   const [loading, setLoading] = useState(true);
   const [currentReviewIdx, setCurrentReviewIdx] = useState(0);
 
+  /* ── Category pills ──────────────────────────────── */
   const quickCategories = [
-    {
-      name: "Necklaces",
-      image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300&auto=format&fit=crop&q=80",
-      path: "/collections?category=Necklace Sets"
-    },
-    {
-      name: "Rings",
-      image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=300&auto=format&fit=crop&q=80",
-      path: "/collections?category=Rings"
-    },
-    {
-      name: "Earrings",
-      image: "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=300&auto=format&fit=crop&q=80",
-      path: "/collections?category=Earrings"
-    },
-    {
-      name: "Bangles",
-      image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=300&auto=format&fit=crop&q=80",
-      path: "/collections?category=Bangles"
-    },
-    {
-      name: "Bracelets",
-      image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=300&auto=format&fit=crop&q=80",
-      path: "/collections?category=Bracelets"
-    },
-    {
-      name: "Chains",
-      image: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=300&auto=format&fit=crop&q=80",
-      path: "/collections?category=Chains"
-    },
-    {
-      name: "Bridal",
-      image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=300&auto=format&fit=crop&q=80",
-      path: "/collections?category=Bridal Collection"
-    }
+    { name: "Necklaces",  image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300&auto=format&fit=crop&q=80",  path: "/collections?category=Necklace Sets" },
+    { name: "Rings",      image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=300&auto=format&fit=crop&q=80",  path: "/collections?category=Rings" },
+    { name: "Earrings",   image: "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=300&auto=format&fit=crop&q=80",  path: "/collections?category=Earrings" },
+    { name: "Bangles",    image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=300&auto=format&fit=crop&q=80",  path: "/collections?category=Bangles" },
+    { name: "Bracelets",  image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=300&auto=format&fit=crop&q=80",  path: "/collections?category=Bracelets" },
+    { name: "Chains",     image: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=300&auto=format&fit=crop&q=80",  path: "/collections?category=Chains" },
+    { name: "Bridal",     image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=300&auto=format&fit=crop&q=80",  path: "/collections?category=Bridal Collection" },
+    { name: "Anklets",    image: "https://images.unsplash.com/photo-1535632787350-4e68ef0ac584?w=300&auto=format&fit=crop&q=80",  path: "/collections?category=Anklets" }
   ];
 
+  /* ── Data loading ────────────────────────────────── */
   useEffect(() => {
-    const loadHomeData = async () => {
+    const load = async () => {
       try {
-        const allProducts = await getProducts();
-        setNewArrivals(allProducts.filter((p) => p.isNew).slice(0, 3));
-        setBestSellers(allProducts.filter((p) => p.isBestSeller).slice(0, 10));
-        setTrendingProducts(allProducts.filter((p) => p.isNew).slice(0, 10));
-        
+        const all = await getProducts();
+        setNewArrivals(all.filter((p) => p.isNew).slice(0, 4));
+        setBestSellers(all.filter((p) => p.isBestSeller).slice(0, 10));
+        setTrendingProducts(all.filter((p) => p.isNew).slice(0, 10));
         const allReviews = await getReviews();
-        setReviews(allReviews.slice(0, 4));
+        setReviews(allReviews.slice(0, 6));
       } catch (err) {
-        console.error("Error loading home page products", err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
-    loadHomeData();
+    load();
   }, []);
 
-  // Auto sliding timer for Patron Testimonials
   useEffect(() => {
     if (reviews.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentReviewIdx((prev) => (prev + 1) % reviews.length);
-    }, 6000);
-    return () => clearInterval(interval);
+    const t = setInterval(() => setCurrentReviewIdx((p) => (p + 1) % reviews.length), 6000);
+    return () => clearInterval(t);
   }, [reviews]);
 
-  // Sliding Hero Background Images
-  const heroImages = [
-    "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=1600&auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1600&auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1600&auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=1600&auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=1600&auto=format&fit=crop&q=80"
+  /* ── Hero slider ─────────────────────────────────── */
+  const heroSlides = [
+    {
+      image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=1600&auto=format&fit=crop&q=80",
+      tag: "New Arrivals 2025",
+      heading: "Wear Your\nLegacy",
+      sub: "Handcrafted 22K gold jewellery for the woman who commands every room."
+    },
+    {
+      image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1600&auto=format&fit=crop&q=80",
+      tag: "Engagement Collection",
+      heading: "Begin With\nPerfection",
+      sub: "Certified diamond solitaires and custom gold bands for your forever moment."
+    },
+    {
+      image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1600&auto=format&fit=crop&q=80",
+      tag: "Heritage Bridal",
+      heading: "Crafted for\nYour Day",
+      sub: "Exquisite bridal sets with timeless Kundan, Polki & diamond craftsmanship."
+    },
+    {
+      image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=1600&auto=format&fit=crop&q=80",
+      tag: "Everyday Luxury",
+      heading: "Subtle &\nStunning",
+      sub: "Delicate everyday pieces that add the perfect touch of gold to any look."
+    }
   ];
-  const [heroImageIdx, setHeroImageIdx] = useState(0);
+
+  const [heroIdx, setHeroIdx] = useState(0);
+  const [slideDir, setSlideDir] = useState(1);
+
+  const goToSlide = (idx) => {
+    setSlideDir(idx > heroIdx ? 1 : -1);
+    setHeroIdx(idx);
+  };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setHeroImageIdx((prev) => (prev + 1) % heroImages.length);
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [heroImageIdx]);
+    const t = setInterval(() => {
+      setSlideDir(1);
+      setHeroIdx((p) => (p + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(t);
+  }, []);
 
-  // Cinematic Video Showcases State & Effects
+  /* ── Video showcases ─────────────────────────────── */
   const [activeVideoIdx, setActiveVideoIdx] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
   const videoRefs = useRef([]);
@@ -115,7 +120,7 @@ export const Home = ({ addToast }) => {
     },
     {
       title: "The Royal Bands",
-      desc: "Custom 22k gold bands with intricate filigree details.",
+      desc: "Custom 22k gold bands with intricate filigree.",
       video: "https://assets.mixkit.co/videos/preview/mixkit-jewelry-gold-rings-on-a-display-40135-large.mp4",
       poster: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&auto=format&fit=crop&q=80",
       productName: "Classic Gold Band",
@@ -146,312 +151,207 @@ export const Home = ({ addToast }) => {
   ];
 
   useEffect(() => {
-    videoRefs.current.forEach((videoEl, idx) => {
-      if (!videoEl) return;
-      if (idx === activeVideoIdx) {
-        videoEl.muted = isMuted;
-        videoEl.play().catch(() => {});
-      } else {
-        videoEl.pause();
-      }
+    videoRefs.current.forEach((vid, idx) => {
+      if (!vid) return;
+      if (idx === activeVideoIdx) { vid.muted = isMuted; vid.play().catch(() => {}); }
+      else vid.pause();
     });
   }, [activeVideoIdx, isMuted]);
 
-
   const handleFullscreen = (idx, e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const videoEl = videoRefs.current[idx];
-    if (videoEl) {
-      if (videoEl.requestFullscreen) {
-        videoEl.requestFullscreen();
-      } else if (videoEl.webkitRequestFullscreen) {
-        videoEl.webkitRequestFullscreen();
-      } else if (videoEl.msRequestFullscreen) {
-        videoEl.msRequestFullscreen();
-      }
-    }
+    e.preventDefault(); e.stopPropagation();
+    const v = videoRefs.current[idx];
+    if (v) (v.requestFullscreen || v.webkitRequestFullscreen || v.msRequestFullscreen)?.call(v);
   };
 
   const handleShare = (idx, e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault(); e.stopPropagation();
     if (navigator.share) {
-      navigator.share({
-        title: showcases[idx].title,
-        text: showcases[idx].desc,
-        url: window.location.origin + `/product/${showcases[idx].productId}`
-      }).catch(() => {});
+      navigator.share({ title: showcases[idx].title, url: `${window.location.origin}/product/${showcases[idx].productId}` }).catch(() => {});
     } else {
-      addToast("Link copied to clipboard!", "success");
-      navigator.clipboard.writeText(window.location.origin + `/product/${showcases[idx].productId}`);
+      navigator.clipboard.writeText(`${window.location.origin}/product/${showcases[idx].productId}`);
+      addToast?.("Link copied!", "success");
     }
   };
 
-  const toggleMute = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsMuted(!isMuted);
-  };
-
+  /* ── Collection cards ────────────────────────────── */
   const collections = [
-    {
-      name: "Necklace Sets",
-      desc: "Royal & Majestic Heritage Sets",
-      image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&auto=format&fit=crop&q=80",
-      path: "/collections?category=Necklace Sets"
-    },
-    {
-      name: "Rings",
-      desc: "Engagement Bands & Solitaires",
-      image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&auto=format&fit=crop&q=80",
-      path: "/collections?category=Rings"
-    },
-    {
-      name: "Earrings",
-      desc: "Classic Jhumkas & Studs",
-      image: "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=600&auto=format&fit=crop&q=80",
-      path: "/collections?category=Earrings"
-    },
-    {
-      name: "Bangles",
-      desc: "Heavy Kundan & Filigree Kadas",
-      image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=600&auto=format&fit=crop&q=80",
-      path: "/collections?category=Bangles"
-    }
+    { name: "Necklace Sets", desc: "Royal & Majestic Heritage Sets",       image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&auto=format&fit=crop&q=80", path: "/collections?category=Necklace Sets",    span: "col-span-1 md:col-span-2 row-span-1 md:row-span-2" },
+    { name: "Rings",         desc: "Engagement Bands & Solitaires",        image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&auto=format&fit=crop&q=80", path: "/collections?category=Rings",             span: "col-span-1 row-span-1 md:row-span-2" },
+    { name: "Earrings",      desc: "Classic Jhumkas & Studs",              image: "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=600&auto=format&fit=crop&q=80", path: "/collections?category=Earrings",          span: "col-span-1 row-span-1" },
+    { name: "Bangles",       desc: "Antique Kundan & Filigree Kadas",      image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=600&auto=format&fit=crop&q=80", path: "/collections?category=Bangles",           span: "col-span-1 row-span-1" }
   ];
 
+  /* ── Trust icons ─────────────────────────────────── */
+  const trustItems = [
+    { icon: <BadgeCheck className="w-7 h-7 text-gold-500" />, title: "BIS 916 Hallmarked",    desc: "Every gold item is certified 22K by the Government of India." },
+    { icon: <Award        className="w-7 h-7 text-gold-500" />, title: "IGI/GIA Diamonds",     desc: "All diamonds carry authenticated IGI or GIA certificates." },
+    { icon: <RotateCcw    className="w-7 h-7 text-gold-500" />, title: "Lifetime Exchange",    desc: "Upgrade or exchange at prevailing market rates, anytime." },
+    { icon: <Truck        className="w-7 h-7 text-gold-500" />, title: "Free Insured Delivery", desc: "We cover all transit risk until your order safely arrives." }
+  ];
+
+  /* ───────────────────────────────────────────────── */
   return (
-    <div className="bg-gold-50/30 dark:bg-luxury-black transition-colors duration-300 font-sans overflow-x-hidden">
-      {/* 1. Hero Section: Cinematic layout with separate container for the content plaque */}
-      <section className="relative flex flex-col items-center justify-center bg-white text-white p-[22px]">
-        <div className="w-full flex justify-center relative z-10">
+    <div className="bg-ivory-100 font-sans overflow-x-hidden">
+
+      {/* ════════════════════════════════════════════
+          1 · HERO SLIDER
+      ════════════════════════════════════════════ */}
+      <section className="relative w-full overflow-hidden bg-ink-950" style={{ minHeight: "clamp(520px,76vh,780px)" }}>
+        {/* Sliding background */}
+        <AnimatePresence initial={false} custom={slideDir}>
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="w-full relative overflow-hidden bg-stone-950 border border-gold-500/25 py-8 px-[18px] sm:p-9 lg:p-12 min-h-[190px] sm:min-h-0 flex flex-col justify-center gold-shadow-lg rounded-[2%]"
-          >
-            {/* Background Images specifically on this container div with cross-fade */}
-            {heroImages.map((img, idx) => (
-              <div 
-                key={idx}
-                className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out hover:scale-[1.02] transform transition-transform ${
-                  idx === heroImageIdx ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-                }`}
-                style={{
-                  backgroundImage: `url('${img}')`
-                }}
-              />
-            ))}
-            {/* Elegant dark gradient overlay for text legibility */}
-            <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/85 to-stone-950/30 sm:to-transparent z-0"></div>
-            
-            <div className="relative z-10 max-w-2xl space-y-3 sm:space-y-[18px] text-left">
-              <span className="text-gold-400 font-semibold tracking-[0.25em] uppercase text-[10px] sm:text-xs block font-sans">
-                The Heritage Boutique
+            key={heroIdx}
+            custom={slideDir}
+            variants={{
+              enter: (d) => ({ x: d > 0 ? "100%" : "-100%" }),
+              center: { x: 0 },
+              exit:  (d) => ({ x: d > 0 ? "-100%" : "100%" })
+            }}
+            initial="enter" animate="center" exit="exit"
+            transition={{ duration: 0.65, ease: "easeInOut" }}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url('${heroSlides[heroIdx].image}')` }}
+          />
+        </AnimatePresence>
+
+        {/* Gradient overlays */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+        {/* Content */}
+        <div className="relative z-10 h-full flex flex-col justify-center px-6 sm:px-10 lg:px-20 py-16 max-w-7xl mx-auto w-full" style={{ minHeight: "clamp(520px,76vh,780px)" }}>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={heroIdx}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.55, ease: "easeOut" }}
+              className="max-w-2xl space-y-5 text-white"
+            >
+              <span className="inline-block text-white text-[10px] sm:text-xs font-semibold tracking-[0.22em] uppercase border border-white/30 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm font-sans">
+                {heroSlides[heroIdx].tag}
               </span>
-              <h1 className="font-serif text-xl sm:text-[38px] lg:text-[46px] font-light leading-tight text-white tracking-wide">
-                Where Elegance <br className="hidden sm:inline" />
-                <span className="font-serif italic text-gold-gradient">Meets Tradition</span>
+              <h1 className="font-serif text-3xl sm:text-5xl lg:text-7xl font-semibold leading-[1.1] tracking-tight whitespace-pre-line text-white">
+                {heroSlides[heroIdx].heading}
               </h1>
-              <p className="hidden sm:block text-stone-200 max-w-lg text-[11px] sm:text-sm font-light leading-relaxed font-sans">
-                Explore exquisite jewellery handcrafted in certified 22-karat gold and certified diamonds. Designed to elevate your heritage, styled for the modern lifestyle.
+              <p className="text-white text-sm sm:text-base font-light leading-relaxed max-w-lg font-sans">
+                {heroSlides[heroIdx].sub}
               </p>
-              <div className="pt-1.5 flex flex-row gap-3">
+              <div className="flex flex-wrap gap-3 pt-2">
                 <Link
                   to="/collections"
-                  className="bg-gold-500 hover:bg-gold-600 text-stone-950 font-bold uppercase tracking-wider text-[10px] sm:text-xs px-4 py-2 rounded-lg transition-all duration-300 shadow-lg hover:scale-105 inline-flex items-center gap-1.5 font-sans"
+                  className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-400 text-white font-semibold text-xs sm:text-sm uppercase tracking-widest px-6 py-3 rounded-full transition-all duration-300 shadow-lg hover:-translate-y-0.5 font-sans"
                 >
-                  Explore
-                  <ArrowRight size={12} />
+                  Explore Collection <ArrowRight size={14} />
                 </Link>
                 <Link
-                  to="/collections"
-                  className="border border-gold-400/40 text-gold-200 hover:bg-gold-500/10 uppercase tracking-wider text-[10px] sm:text-xs px-4 py-2 rounded-lg transition-all duration-300 font-sans"
+                  to="/about"
+                  className="inline-flex items-center gap-2 border border-white/30 text-white hover:bg-white/10 font-medium text-xs sm:text-sm uppercase tracking-widest px-6 py-3 rounded-full transition-all duration-300 backdrop-blur-sm font-sans"
                 >
-                  Shop Now
+                  Our Story
                 </Link>
               </div>
 
-              {/* Horizontal Trust Badges: Hidden on mobile to save space */}
-              <div className="pt-6 hidden md:grid grid-cols-4 gap-3 max-w-3xl border-t border-stone-800/30 select-none">
-                <div className="flex items-center gap-2 bg-stone-950/70 border border-gold-500/10 p-2 sm:p-2.5 rounded-2xl backdrop-blur-md">
-                  <ShieldCheck className="text-gold-400 w-4 h-4 shrink-0" />
-                  <div>
-                    <h4 className="text-[9px] uppercase font-bold tracking-wider text-white font-sans">Good Quality</h4>
-                    <p className="text-[8px] text-stone-400 font-sans">Certified 22K Gold</p>
+              {/* Trust badges on hero */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-5 gap-y-2 pt-5 max-w-xl">
+                {[
+                  { icon: <ShieldCheck size={16} />, label: "BIS Hallmarked" },
+                  { icon: <Sparkles    size={16} />, label: "Modern Design" },
+                  { icon: <Gem         size={16} />, label: "IGI Certified" },
+                  { icon: <Award       size={16} />, label: "Lifetime Exchange" }
+                ].map((b) => (
+                  <div key={b.label} className="flex items-center gap-2 text-white">
+                    <span className="text-gold-300 shrink-0">{b.icon}</span>
+                    <span className="text-[10px] sm:text-xs font-medium font-sans leading-none text-white">{b.label}</span>
                   </div>
-                </div>
-                <div className="flex items-center gap-2 bg-stone-950/70 border border-gold-500/10 p-2 sm:p-2.5 rounded-2xl backdrop-blur-md">
-                  <Sparkles className="text-gold-400 w-4 h-4 shrink-0" />
-                  <div>
-                    <h4 className="text-[9px] uppercase font-bold tracking-wider text-white font-sans">Fresh Designs</h4>
-                    <p className="text-[8px] text-stone-400 font-sans">Modern Heritage</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 bg-stone-950/70 border border-gold-500/10 p-2 sm:p-2.5 rounded-2xl backdrop-blur-md">
-                  <Gem className="text-gold-400 w-4 h-4 shrink-0" />
-                  <div>
-                    <h4 className="text-[9px] uppercase font-bold tracking-wider text-white font-sans">Suitable For All</h4>
-                    <p className="text-[8px] text-stone-400 font-sans">Everyday & Bridal</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 bg-stone-950/70 border border-gold-500/10 p-2 sm:p-2.5 rounded-2xl backdrop-blur-md">
-                  <Award className="text-gold-400 w-4 h-4 shrink-0" />
-                  <div>
-                    <h4 className="text-[9px] uppercase font-bold tracking-wider text-white font-sans">100% Certified</h4>
-                    <p className="text-[8px] text-stone-400 font-sans">BIS Hallmarked</p>
-                  </div>
-                </div>
+                ))}
               </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-            </div>
-
-            {/* 5 Dots Indicator Inside the image container */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex justify-center gap-2.5 z-20">
-              {heroImages.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setHeroImageIdx(idx)}
-                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                    idx === heroImageIdx 
-                      ? "bg-gold-500 w-6" 
-                      : "bg-white/40 hover:bg-white/80 w-2"
-                  }`}
-                  aria-label={`Go to slide ${idx + 1}`}
-                />
-              ))}
-            </div>
-
-          </motion.div>
+        {/* Slide dots */}
+        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+          {heroSlides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goToSlide(i)}
+              className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${i === heroIdx ? "bg-gold-400 w-8" : "bg-white/30 hover:bg-white/60 w-2"}`}
+              aria-label={`Slide ${i + 1}`}
+            />
+          ))}
         </div>
       </section>
 
-      {/* Quick Category Icons Slider (Voylla Style) */}
-      <section className="py-5 sm:py-10 bg-white border-b border-gold-200/10 text-center">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="max-w-2xl mx-auto mb-5 sm:mb-8 space-y-1">
-            <span className="text-gold-600 font-semibold tracking-[0.25em] uppercase text-[10px] sm:text-xs block font-sans">
-              Exquisite Creations
-            </span>
-            <h2 className="text-lg sm:text-2xl font-bold text-stone-900">
-              Shop by Category
-            </h2>
-            <div className="h-0.5 w-12 bg-gold-500 mx-auto mt-2"></div>
+      {/* ════════════════════════════════════════════
+          2 · SHOP BY CATEGORY
+      ════════════════════════════════════════════ */}
+      <section className="py-12 sm:py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-10 space-y-1">
+            <span className="section-kicker block">Discover</span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-ink-900">Shop by Category</h2>
+            <div className="h-px w-14 bg-gold-400 mx-auto mt-3" />
           </div>
-          
-          <div className="grid grid-cols-3 gap-y-4 gap-x-1 md:flex md:flex-row md:flex-wrap md:justify-center md:gap-8 select-none">
-            {quickCategories.map((cat, idx) => (
+
+          <div className="grid grid-cols-4 sm:grid-cols-8 gap-4 sm:gap-5 md:gap-6">
+            {quickCategories.map((cat, i) => (
               <Link
-                key={idx}
+                key={i}
                 to={cat.path}
-                className={`flex flex-col items-center gap-1 group shrink-0 ${idx === 6 ? "hidden md:flex" : ""}`}
+                className="flex flex-col items-center gap-2.5 group"
               >
-                <div className="w-14 h-14 min-[370px]:w-16 min-[370px]:h-16 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-gold-300/40 group-hover:border-gold-500 transition-all duration-300 shadow-md p-0.5 bg-white">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-22 md:h-22 rounded-xl overflow-hidden border border-ink-100 group-hover:border-gold-400 transition-all duration-300 shadow-sm group-hover:shadow-lg group-hover:-translate-y-1 bg-white">
                   <img
                     src={cat.image}
                     alt={cat.name}
-                    className="w-full h-full object-cover rounded-full group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                 </div>
-                <span className="text-[8px] sm:text-[10px] font-bold text-stone-900 group-hover:text-gold-600 transition-colors uppercase tracking-wider text-center">
+                <span className="text-[9px] sm:text-[10px] md:text-xs font-semibold text-ink-600 group-hover:text-gold-600 transition-colors uppercase tracking-wider text-center">
                   {cat.name}
                 </span>
               </Link>
             ))}
           </div>
 
-          {/* View All Categories Link (Centered at the end of category section) */}
-          <div className="mt-5 sm:mt-8 flex justify-center">
-            <Link
-              to="/collections"
-              className="text-[10px] sm:text-xs font-bold text-gold-600 hover:text-gold-500 transition-all flex items-center gap-1.5 uppercase tracking-widest border-b border-transparent hover:border-gold-500 pb-0.5 font-sans cursor-pointer"
-            >
-              View All Categories
-              <ArrowRight size={12} />
+          <div className="mt-8 text-center">
+            <Link to="/collections" className="inline-flex items-center gap-1.5 text-xs font-semibold text-gold-600 hover:text-gold-500 transition-colors uppercase tracking-widest">
+              View All Categories <ArrowRight size={12} />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 3. Best Sellers: Shows 2 products on mobile, 4 on desktop */}
-      <section className="py-6 sm:py-12 lg:py-20 px-4 sm:px-6 max-w-7xl mx-auto border-t border-gold-200/10">
-        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12 space-y-1">
-          <span className="text-gold-600 dark:text-gold-400 font-medium tracking-[0.2em] uppercase text-[9px] sm:text-xs block font-sans">
-            Most Loved Masterpieces
-          </span>
-          <h2 className="text-lg sm:text-2xl lg:text-4xl font-bold text-luxury-black dark:text-white">
-            Best Sellers
-          </h2>
-          <div className="h-0.5 w-12 bg-gold-500 mx-auto mt-2"></div>
-        </div>
+      <div className="section-divider" />
 
-        {loading ? (
-          <ProductGridSkeleton count={6} />
-        ) : (
-          <>
-            <div className="grid grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4">
-              {bestSellers.map((product, index) => (
-                <div
-                  key={product.id}
-                  className={index >= 6 ? "hidden lg:block" : index >= 3 && index < 6 ? "block" : ""}
-                >
-                  <ProductCard product={product} addToast={addToast} compact={true} />
-                </div>
-              ))}
-            </div>
-
-            {/* Centered View All link at the bottom end of Best Sellers */}
-            <div className="mt-8 flex justify-center">
-              <Link
-                to="/collections?filter=best"
-                className="text-xs sm:text-sm font-bold text-gold-600 dark:text-gold-400 hover:text-gold-500 transition-all flex items-center gap-1.5 uppercase tracking-widest border-b border-transparent hover:border-gold-500 pb-0.5 font-sans cursor-pointer"
-              >
-                View All Products
-                <ArrowRight size={14} />
-              </Link>
-            </div>
-          </>
-        )}
-      </section>
-
-      {/* 3.1 Trending: Shows 3 products on mobile, 5 on desktop */}
-      <section className="py-6 sm:py-12 lg:py-20 bg-white border-t border-b border-gold-200/10">
+      {/* ════════════════════════════════════════════
+          3 · BEST SELLERS
+      ════════════════════════════════════════════ */}
+      <section className="py-12 sm:py-16 bg-ivory-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12 space-y-1">
-            <span className="text-gold-600 font-medium tracking-[0.2em] uppercase text-[9px] sm:text-xs block font-sans">
-              Hot & Fashionable Curations
-            </span>
-            <h2 className="text-lg sm:text-2xl lg:text-4xl font-bold text-stone-900">
-              Trending Now
-            </h2>
-            <div className="h-0.5 w-12 bg-gold-500 mx-auto mt-2"></div>
+          <div className="text-center mb-8 sm:mb-10 space-y-1">
+            <span className="section-kicker block">Most Loved</span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-ink-900">Best Sellers</h2>
+            <div className="h-px w-14 bg-gold-400 mx-auto mt-3" />
           </div>
 
           {loading ? (
-            <ProductGridSkeleton count={6} />
+            <ProductGridSkeleton count={5} />
           ) : (
             <>
-              <div className="grid grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4">
-                {trendingProducts.map((product, index) => (
-                  <div
-                    key={product.id}
-                    className={index >= 6 ? "hidden lg:block" : index >= 3 && index < 6 ? "block" : ""}
-                  >
-                    <ProductCard product={product} addToast={addToast} compact={true} />
+              <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-4">
+                {bestSellers.map((product, index) => (
+                  <div key={product.id} className={index >= 6 ? "hidden lg:block" : ""}>
+                    <ProductCard product={product} addToast={addToast} compact />
                   </div>
                 ))}
               </div>
-
-              {/* Centered View All link at the bottom end of Trending */}
-              <div className="mt-8 flex justify-center">
-                <Link
-                  to="/collections"
-                  className="text-xs sm:text-sm font-bold text-gold-600 hover:text-gold-500 transition-all flex items-center gap-1.5 uppercase tracking-widest border-b border-transparent hover:border-gold-500 pb-0.5 font-sans cursor-pointer"
-                >
-                  View All Collections
-                  <ArrowRight size={14} />
+              <div className="mt-8 text-center">
+                <Link to="/collections?filter=best" className="inline-flex items-center gap-1.5 text-xs font-semibold text-gold-600 hover:text-gold-500 transition-colors uppercase tracking-widest">
+                  View All Products <ArrowRight size={12} />
                 </Link>
               </div>
             </>
@@ -459,360 +359,266 @@ export const Home = ({ addToast }) => {
         </div>
       </section>
 
-      {/* 2. Discover Srushti: Bento Grid Showcase (Super compact on mobile) */}
-      <section className="py-5 sm:py-8 bg-stone-950 border-b border-t border-gold-800/20 text-center">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-4 sm:mb-6 lg:mb-10 space-y-1">
-            <span className="text-gold-400 font-semibold tracking-[0.25em] uppercase text-xs block font-sans">
-              THE ART OF SPLENDOR
-            </span>
-            <h2 className="text-lg sm:text-2xl font-bold text-white">
-              Discover Srushti
-            </h2>
-            <div className="h-0.5 w-16 bg-gold-500 mx-auto mt-2"></div>
+      <div className="section-divider" />
+
+      {/* ════════════════════════════════════════════
+          4 · COLLECTION SHOWCASE (Bento Grid)
+      ════════════════════════════════════════════ */}
+      <section className="py-12 sm:py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-10 space-y-1">
+            <span className="section-kicker block">Curated for You</span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-ink-900">Explore Collections</h2>
+            <div className="h-px w-14 bg-gold-400 mx-auto mt-3" />
           </div>
 
-          {/* Bento Grid: 2 Columns on Mobile, 4 Columns on Desktop */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 auto-rows-[110px] sm:auto-rows-[120px] md:auto-rows-[140px]">
-            
-            {/* Box 1: Necklace Sets */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.05 }}
-              className="col-span-1 row-span-1 md:col-span-2 md:row-span-2"
-            >
-              <Link
-                to="/collections?category=Necklace%20Sets"
-                className="group relative w-full h-full rounded-xl md:rounded-2xl overflow-hidden border border-gold-200/20 shadow-sm luxury-glow-hover bg-stone-900 flex flex-col justify-end p-2 sm:p-5 block"
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 auto-rows-[140px] sm:auto-rows-[160px] md:auto-rows-[190px]">
+            {collections.map((col, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.07 }}
+                className={col.span}
               >
-                <div 
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-60"
-                  style={{ backgroundImage: `url('${collections[0].image}')` }}
-                ></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/20 to-transparent z-10"></div>
-                <div className="relative z-20 text-left">
-                  <span className="hidden md:inline-block bg-gold-500 text-stone-950 text-[8px] uppercase font-bold px-2 py-0.5 rounded-full tracking-wider font-sans mb-1.5">Heritage Category</span>
-                  <h3 className="font-serif text-xs sm:text-lg md:text-xl font-bold text-white tracking-wide">Necklaces</h3>
-                  <p className="hidden sm:block text-[10px] text-stone-300 font-light font-sans mt-0.5">{collections[0].desc}</p>
-                </div>
-              </Link>
-            </motion.div>
+                <Link
+                  to={col.path}
+                  className="group relative w-full h-full rounded-2xl overflow-hidden block"
+                >
+                  <div
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                    style={{ backgroundImage: `url('${col.image}')` }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent md:hidden" />
+                  <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 text-white">
+                    <h3 className="font-serif text-base sm:text-xl md:text-2xl font-semibold leading-tight mb-0.5">
+                      {col.name}
+                    </h3>
+                    <p className="text-[10px] sm:text-xs text-white/75 font-sans font-light mb-2 hidden sm:block">
+                      {col.desc}
+                    </p>
+                    <span className="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-semibold text-gold-300 uppercase tracking-wider group-hover:gap-2 transition-all duration-300">
+                      Shop Now <ArrowRight size={10} />
+                    </span>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
 
-            {/* Box 2: Rings */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="col-span-1 row-span-1 md:row-span-2"
+            {/* Extra: Bespoke CTA */}
+            <div className="flex col-span-2 row-span-1 rounded-2xl border border-white/10 p-3.5 sm:p-5 flex-col justify-between overflow-hidden relative shadow-sm hover:shadow-md transition-all duration-300 bg-cover bg-center"
+              style={{ backgroundImage: "linear-gradient(to right, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.2) 100%), url('https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&auto=format&fit=crop&q=80')" }}
             >
-              <Link
-                to="/collections?category=Rings"
-                className="group relative w-full h-full rounded-xl md:rounded-2xl overflow-hidden border border-gold-200/20 shadow-sm luxury-glow-hover bg-stone-900 flex flex-col justify-end p-2 sm:p-4 block"
-              >
-                <div 
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-60"
-                  style={{ backgroundImage: `url('${collections[1].image}')` }}
-                ></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/20 to-transparent z-10"></div>
-                <div className="relative z-20 text-left">
-                  <span className="hidden md:inline-block bg-gold-500 text-stone-950 text-[8px] uppercase font-bold px-1.5 py-0.5 rounded-full tracking-wider font-sans mb-1.5">Solitaires</span>
-                  <h3 className="font-serif text-xs sm:text-lg font-bold text-white tracking-wide">Rings</h3>
-                  <p className="hidden sm:block text-[10px] text-stone-300 font-light font-sans mt-0.5">{collections[1].desc}</p>
-                </div>
-              </Link>
-            </motion.div>
-
-            {/* Box 3: Earrings */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.15 }}
-              className="col-span-1 row-span-1"
-            >
-              <Link
-                to="/collections?category=Earrings"
-                className="group relative w-full h-full rounded-xl md:rounded-2xl overflow-hidden border border-gold-200/20 shadow-sm luxury-glow-hover bg-stone-900 flex flex-col justify-end p-2 sm:p-4 block"
-              >
-                <div 
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-60"
-                  style={{ backgroundImage: `url('${collections[2].image}')` }}
-                ></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/20 to-transparent z-10"></div>
-                <div className="relative z-20 text-left">
-                  <h3 className="font-serif text-xs sm:text-base font-bold text-white tracking-wide leading-tight">Earrings</h3>
-                  <p className="hidden sm:block text-[9px] text-stone-300 font-light font-sans mt-0.5">Jhumkas & Studs</p>
-                </div>
-              </Link>
-            </motion.div>
-
-            {/* Box 4: Bangles */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="col-span-1 row-span-1"
-            >
-              <Link
-                to="/collections?category=Bangles"
-                className="group relative w-full h-full rounded-xl md:rounded-2xl overflow-hidden border border-gold-200/20 shadow-sm luxury-glow-hover bg-stone-900 flex flex-col justify-end p-2 sm:p-4 block"
-              >
-                <div 
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105 opacity-60"
-                  style={{ backgroundImage: `url('${collections[3].image}')` }}
-                ></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/20 to-transparent z-10"></div>
-                <div className="relative z-20 text-left">
-                  <h3 className="font-serif text-xs sm:text-base font-bold text-white tracking-wide leading-tight">Bangles</h3>
-                  <p className="hidden sm:block text-[9px] text-stone-300 font-light font-sans mt-0.5">Antique Kadas</p>
-                </div>
-              </Link>
-            </motion.div>
-
-            {/* Box 5: Bespoke Custom consultation (Hidden on mobile) */}
-            <div className="hidden md:flex md:col-span-2 md:row-span-1 rounded-2xl p-5 border border-gold-400/20 bg-stone-950 text-left relative overflow-hidden flex flex-col justify-between gold-shadow">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gold-500/10 rounded-full blur-3xl"></div>
-              <div className="space-y-1 relative z-10">
-                <span className="text-gold-400 font-medium tracking-[0.25em] uppercase text-[8px] block font-sans">Karigar Studio</span>
-                <h3 className="font-serif text-sm sm:text-base text-white font-bold leading-tight">
-                  Bespoke Design Studio
-                </h3>
-                <p className="text-[10px] text-stone-400 font-light leading-relaxed font-sans">
-                  Co-create your dream jewellery with our designers. Custom sketches & 3D renders.
-                </p>
+              <div className="relative z-10">
+                <span className="text-[8px] sm:text-[9px] text-emerald-400 font-bold tracking-[0.22em] uppercase font-sans">Karigar Studio</span>
+                <h3 className="font-serif text-base sm:text-xl font-bold text-white mt-0.5 sm:mt-1 leading-tight">Bespoke Design Studio</h3>
+                <p className="text-[10px] sm:text-xs text-white/80 font-light mt-0.5 sm:mt-1 max-w-[200px] sm:max-w-xs leading-normal sm:leading-relaxed">Co-create your dream jewellery with our master artisans. Custom 3D renders & live previews.</p>
               </div>
               <a
-                href="https://wa.me/919876543210?text=Hi!%20I%20would%20like%20to%20consult%20about%20a%20custom%20jewellery%20design."
+                href="https://wa.me/919876543210?text=Hi!%20I%20want%20to%20consult%20about%20a%20custom%20jewellery%20design."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 mt-3 bg-emerald-500 hover:bg-emerald-600 text-white py-1.5 px-3 rounded-xl text-[10px] font-semibold tracking-wide transition-all duration-300 shadow-md w-fit font-sans"
+                className="relative z-10 inline-flex items-center gap-2 mt-2.5 bg-[#25D366] hover:bg-[#20bc5a] text-white py-1.5 px-3.5 rounded-full text-[9px] sm:text-[10px] font-semibold tracking-wide transition-all duration-300 w-fit font-sans"
               >
-                {/* WhatsApp SVG Icon */}
-                <svg viewBox="0 0 32 32" width="13" height="13" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 32 32" width="11" height="11" fill="currentColor">
                   <path d="M16.004 2.667C8.64 2.667 2.667 8.64 2.667 16c0 2.347.635 4.64 1.84 6.653L2.667 29.333l6.88-1.8A13.267 13.267 0 0 0 16.004 29.333c7.36 0 13.329-5.973 13.329-13.333S23.364 2.667 16.004 2.667zm0 24a10.613 10.613 0 0 1-5.413-1.48l-.387-.227-4.08 1.067 1.093-3.973-.253-.413A10.587 10.587 0 0 1 5.333 16c0-5.88 4.787-10.667 10.667-10.667S26.667 10.12 26.667 16 21.88 26.667 16 26.667zm5.84-7.973c-.32-.16-1.893-.933-2.187-1.04-.293-.107-.506-.16-.72.16-.213.32-.827 1.04-1.013 1.253-.187.213-.373.24-.693.08-.32-.16-1.347-.493-2.56-1.573-.947-.84-1.587-1.88-1.773-2.2-.187-.32-.02-.493.14-.653.144-.144.32-.373.48-.56.16-.187.213-.32.32-.533.107-.213.053-.4-.027-.56-.08-.16-.72-1.733-.987-2.373-.26-.627-.52-.533-.72-.547-.187-.013-.4-.013-.613-.013-.213 0-.56.08-.853.4-.293.32-1.12 1.093-1.12 2.667s1.147 3.093 1.307 3.307c.16.213 2.253 3.44 5.467 4.827.763.333 1.36.533 1.827.68.767.24 1.467.207 2.013.127.613-.093 1.893-.773 2.16-1.52.267-.747.267-1.387.187-1.52-.08-.133-.293-.213-.613-.373z"/>
                 </svg>
                 Chat on WhatsApp
               </a>
             </div>
 
-            {/* Box 6: Gift Card — Send a Gift */}
-            <div className="hidden md:flex md:col-span-1 md:row-span-1 rounded-2xl border border-gold-400/30 text-left flex-col justify-between overflow-hidden relative group cursor-pointer"
-              style={{ background: "linear-gradient(135deg, #1c1008 0%, #3d2205 40%, #78450f 80%, #c47f17 100%)" }}
+            {/* Gift card */}
+            <div className="flex col-span-1 row-span-1 rounded-2xl flex-col justify-between overflow-hidden relative border border-white/10 p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-300 bg-cover bg-center"
+              style={{ backgroundImage: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.3) 100%), url('https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&auto=format&fit=crop&q=80')" }}
             >
-              {/* Decorative ribbon corner */}
-              <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden z-20 pointer-events-none">
-                <div className="absolute top-3 right-[-20px] rotate-45 bg-gold-500 text-stone-950 text-[7px] font-bold uppercase tracking-widest w-20 text-center py-0.5 shadow-md">
-                  Gift
-                </div>
-              </div>
-              {/* Glowing orb accent */}
-              <div className="absolute bottom-[-20px] left-[-20px] w-28 h-28 rounded-full bg-gold-500/20 blur-2xl group-hover:bg-gold-400/30 transition-all duration-700"></div>
-              <div className="absolute top-[-10px] right-8 w-16 h-16 rounded-full bg-amber-400/10 blur-xl"></div>
-
-              <div className="relative z-10 p-4 pb-4 flex flex-col gap-3 h-full pt-5">
-                <div className="space-y-1.5">
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-7 h-7 rounded-full bg-gold-500/20 border border-gold-400/30 flex items-center justify-center shrink-0">
-                      <Gift size={14} className="text-gold-400" />
+              <div className="flex flex-col h-full relative z-10 justify-between">
+                <div>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <div className="w-5 h-5 rounded-full bg-white/20 border border-white/25 flex items-center justify-center">
+                      <Gift size={10} className="text-white" />
                     </div>
-                    <span className="text-gold-400 font-semibold tracking-[0.2em] uppercase text-[8px] font-sans">For Someone Special</span>
+                    <span className="text-[7.5px] sm:text-[9px] text-rose-300 font-bold uppercase tracking-[0.18em] font-sans">Gift Ideas</span>
                   </div>
-                  <h3 className="font-serif text-sm font-bold text-white leading-snug mt-1">
-                    Send a Gift 🎁
-                  </h3>
-                  <p className="text-[9px] text-stone-300 font-light leading-relaxed font-sans">
-                    Surprise a loved one with handcrafted gold & diamond jewellery — beautifully gift-wrapped.
+                  <h3 className="font-serif text-[11px] sm:text-sm font-bold text-white leading-tight">Send a Precious Gift</h3>
+                  <p className="text-[7.5px] sm:text-[9px] text-white/75 font-light leading-snug mt-0.5 font-sans line-clamp-2">Gift-wrapped jewellery, delivered with love to your special someone.</p>
+                </div>
+                <Link to="/collections" className="inline-flex items-center gap-1 bg-rose-600 hover:bg-rose-500 text-white py-1 px-2.5 rounded-lg text-[8px] sm:text-[9px] uppercase tracking-wider font-bold transition-colors font-sans w-fit mt-1.5">
+                  <Gift size={9} /> Shop Gifts <ArrowRight size={8} />
+                </Link>
+              </div>
+            </div>
+
+            {/* Location card */}
+            <a 
+              href="https://maps.google.com/?q=Srushti+Jewellery+Sangamner"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex col-span-1 row-span-1 rounded-2xl flex-col justify-between overflow-hidden relative border border-white/10 p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-300 group bg-cover bg-center"
+              style={{ backgroundImage: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.3) 100%), url('https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=600&auto=format&fit=crop&q=80')" }}
+            >
+              <div className="p-0 flex flex-col h-full relative z-10 justify-between">
+                <div>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <div className="w-5 h-5 rounded-full bg-white/20 border border-white/25 flex items-center justify-center">
+                      <MapPin size={10} className="text-white" />
+                    </div>
+                    <span className="text-[7.5px] sm:text-[9px] text-gold-300 font-bold uppercase tracking-[0.18em] font-sans">Our Boutique</span>
+                  </div>
+                  <h3 className="font-serif text-[11px] sm:text-sm font-bold text-white leading-tight">Srushti Showroom</h3>
+                  <p className="text-[7.5px] sm:text-[9px] text-white/75 font-light leading-snug mt-0.5 font-sans line-clamp-1">
+                    Sangamner, Maharashtra.
                   </p>
                 </div>
-
-                <div className="mt-auto">
-                  <Link
-                    to="/collections"
-                    className="inline-flex items-center gap-1.5 bg-gold-500 hover:bg-gold-400 text-stone-950 py-1.5 px-3 rounded-lg text-[9px] uppercase tracking-wider font-bold transition-colors duration-300 shadow-md font-sans w-fit"
-                  >
-                    <Gift size={10} />
-                    Shop Gift Ideas
-                    <ArrowRight size={9} />
-                  </Link>
-                </div>
+                <span className="inline-flex items-center gap-1 bg-gold-500 hover:bg-gold-400 text-white py-1 px-2.5 rounded-lg text-[8px] sm:text-[9px] uppercase tracking-wider font-bold transition-colors font-sans w-fit mt-1.5">
+                  <MapPin size={9} /> Location <ArrowRight size={8} className="group-hover:translate-x-0.5 transition-transform" />
+                </span>
               </div>
-            </div>
-
-            {/* Box 7: Quality Assurance (Hidden on mobile) */}
-            <div className="hidden md:flex md:col-span-1 md:row-span-1 rounded-2xl p-4 border border-gold-500/25 bg-gold-gradient text-stone-950 text-left flex flex-col justify-between">
-              <div className="space-y-0.5">
-                <h3 className="font-serif text-sm font-bold leading-tight">100% Purity</h3>
-                <p className="text-[9px] text-stone-950/85 font-medium leading-relaxed font-sans">BIS 916 Gold & IGI Certified Diamonds.</p>
-              </div>
-              <div className="flex items-center gap-1 text-stone-950 text-[9px] font-bold uppercase tracking-wider font-sans">
-                <ShieldCheck size={14} />
-                <span>Certified Safe</span>
-              </div>
-            </div>
-
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Cinematic Showcases: Srushti in Motion (Below Discover Srushti) */}
-      <section className="py-8 bg-white border-t border-b border-gold-200/10 text-center overflow-x-hidden">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8 space-y-1">
-            <span className="text-gold-600 font-semibold tracking-[0.25em] uppercase text-xs block font-sans">
-              Handcrafted Brilliance in Motion
-            </span>
-            <h2 className="font-serif text-xl sm:text-2xl text-stone-900">
-              Srushti Cinematic Showcases
-            </h2>
-            <div className="h-0.5 w-16 bg-gold-500 mx-auto mt-2"></div>
+      <div className="section-divider" />
+
+      {/* ════════════════════════════════════════════
+          5 · TRENDING NOW
+      ════════════════════════════════════════════ */}
+      <section className="py-12 sm:py-16 bg-ivory-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-10 space-y-1">
+            <span className="section-kicker block">What's Hot</span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-ink-900">Trending Now</h2>
+            <div className="h-px w-14 bg-gold-400 mx-auto mt-3" />
           </div>
 
-          <div className="relative w-full max-w-[280px] sm:max-w-md md:max-w-lg mx-auto flex items-center justify-center overflow-visible py-4 min-h-[420px]">
+          {loading ? (
+            <ProductGridSkeleton count={5} />
+          ) : (
+            <>
+              <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-4">
+                {trendingProducts.map((product, index) => (
+                  <div key={product.id} className={index >= 6 ? "hidden lg:block" : ""}>
+                    <ProductCard product={product} addToast={addToast} compact />
+                  </div>
+                ))}
+              </div>
+              <div className="mt-8 text-center">
+                <Link to="/collections" className="inline-flex items-center gap-1.5 text-xs font-semibold text-gold-600 hover:text-gold-500 transition-colors uppercase tracking-widest">
+                  View All Collections <ArrowRight size={12} />
+                </Link>
+              </div>
+            </>
+          )}
+        </div>
+      </section>
+
+      <div className="section-divider" />
+
+      {/* ════════════════════════════════════════════
+          6 · CINEMATIC VIDEO SHOWCASES
+      ════════════════════════════════════════════ */}
+      <section className="py-12 sm:py-16 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-10 space-y-1">
+            <span className="section-kicker block">In Motion</span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-ink-900">Srushti Showcases</h2>
+            <div className="h-px w-14 bg-gold-400 mx-auto mt-3" />
+          </div>
+
+          <div className="relative w-full max-w-[300px] sm:max-w-md mx-auto flex items-center justify-center py-4" style={{ minHeight: "440px" }}>
             {showcases.map((item, idx) => {
-              const isActive = idx === activeVideoIdx;
-              
-              const getCoverflowClass = () => {
-                if (isActive) {
-                  return "relative z-30 scale-100 opacity-100 translate-x-0 pointer-events-auto border-gold-500/40 shadow-2xl";
-                }
-                const prevIdx = (activeVideoIdx - 1 + showcases.length) % showcases.length;
-                const nextIdx = (activeVideoIdx + 1) % showcases.length;
-                
-                if (idx === prevIdx) {
-                  return "absolute z-10 scale-[0.82] opacity-40 -translate-x-[45%] sm:-translate-x-[50%] pointer-events-none skew-y-1";
-                }
-                if (idx === nextIdx) {
-                  return "absolute z-10 scale-[0.82] opacity-40 translate-x-[45%] sm:translate-x-[50%] pointer-events-none -skew-y-1";
-                }
-                return "absolute z-0 scale-50 opacity-0 pointer-events-none hidden";
-              };
+              const isActiveV = idx === activeVideoIdx;
+              const prevIdx = (activeVideoIdx - 1 + showcases.length) % showcases.length;
+              const nextIdx = (activeVideoIdx + 1) % showcases.length;
+
+              let cardClass = "";
+              if (isActiveV)       cardClass = "relative z-30 scale-100 opacity-100 translate-x-0 pointer-events-auto shadow-2xl border-gold-300/40";
+              else if (idx === prevIdx) cardClass = "absolute z-10 scale-[0.8] opacity-30 -translate-x-[48%] pointer-events-none";
+              else if (idx === nextIdx) cardClass = "absolute z-10 scale-[0.8] opacity-30  translate-x-[48%] pointer-events-none";
+              else                  cardClass = "absolute z-0 scale-50 opacity-0 pointer-events-none hidden";
 
               return (
-                <div 
+                <div
                   key={idx}
-                  className={`w-[210px] sm:w-[230px] aspect-[9/16] rounded-2xl overflow-hidden border border-white/10 bg-stone-900 transition-all duration-500 ease-in-out flex flex-col justify-end p-0 ${getCoverflowClass()}`}
+                  className={`w-[220px] sm:w-[240px] aspect-[9/16] rounded-2xl overflow-hidden border bg-ink-950 transition-all duration-500 ease-in-out ${cardClass}`}
                 >
-                  {/* Video Element */}
-                  <video 
+                  <video
                     ref={(el) => (videoRefs.current[idx] = el)}
                     src={item.video}
                     poster={item.poster}
-                    loop
-                    muted={isMuted}
-                    playsInline
+                    loop muted={isMuted} playsInline
                     className="absolute inset-0 w-full h-full object-cover z-0"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 z-10" />
 
-                  {/* Elegant dark vignette gradients */}
-                  <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-black/60 to-transparent z-10"></div>
-                  <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10"></div>
-
-                  {/* Top Header Overlay (only visible on active card) */}
-                  {isActive && (
-                    <div className="absolute top-3 inset-x-3 flex items-center justify-between z-20 animate-fade-in">
-                      <span className="text-[10px] font-medium text-white/90 tracking-wide truncate max-w-[100px] sm:max-w-[120px] font-sans">
-                        {item.title}
-                      </span>
-                      <div className="flex items-center gap-1.5 text-white/80">
-                        <button 
-                          onClick={(e) => toggleMute(e)}
-                          className="hover:text-gold-400 p-0.5 cursor-pointer transition-colors"
-                          aria-label={isMuted ? "Unmute video" : "Mute video"}
-                        >
-                          {isMuted ? <VolumeX size={13} /> : <Volume2 size={13} />}
-                        </button>
-                        <button 
-                          onClick={(e) => handleShare(idx, e)}
-                          className="hover:text-gold-400 p-0.5 cursor-pointer transition-colors"
-                          aria-label="Share video"
-                        >
-                          <Share2 size={13} />
-                        </button>
-                        <button 
-                          onClick={(e) => handleFullscreen(idx, e)}
-                          className="hover:text-gold-400 p-0.5 cursor-pointer transition-colors"
-                          aria-label="Maximize video"
-                        >
-                          <Maximize2 size={13} />
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Large Centered "Unmute Video" button on active if muted */}
-                  {isActive && isMuted && (
-                    <button 
-                      onClick={(e) => toggleMute(e)}
-                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/60 border border-white/20 hover:bg-gold-500 hover:text-stone-950 text-white rounded-lg px-3 py-1.5 text-[9px] uppercase tracking-wider font-bold transition-all duration-300 backdrop-blur-sm z-20 flex items-center gap-1 cursor-pointer animate-pulse"
-                    >
-                      <Volume2 size={10} />
-                      Unmute video
-                    </button>
-                  )}
-
-                  {/* Bottom glassmorphic product banner (only visible on active card) */}
-                  {isActive && (
-                    <div className="absolute bottom-6 inset-x-2.5 bg-black/70 border border-white/10 backdrop-blur-md rounded-xl p-1.5 flex items-center justify-between gap-2 z-20 animate-fade-in shadow-lg">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <img 
-                          src={item.productImg} 
-                          alt={item.productName} 
-                          className="w-8.5 h-8.5 rounded-lg object-cover border border-white/10 shrink-0" 
-                        />
-                        <div className="text-left leading-tight min-w-0">
-                          <h4 className="text-[10px] font-bold text-white font-sans truncate">
-                            {item.productName}
-                          </h4>
-                          <span className="text-[9px] text-gold-400 font-sans font-medium">
-                            {item.productPrice}
-                          </span>
+                  {isActiveV && (
+                    <>
+                      {/* Top controls */}
+                      <div className="absolute top-3 inset-x-3 flex items-center justify-between z-20">
+                        <span className="text-[10px] font-medium text-white/90 font-sans truncate max-w-[110px]">{item.title}</span>
+                        <div className="flex items-center gap-1.5 text-white/80">
+                          <button onClick={(e) => { e.preventDefault(); setIsMuted(!isMuted); }} className="hover:text-gold-300 p-0.5 transition-colors cursor-pointer" aria-label="Mute">
+                            {isMuted ? <VolumeX size={13} /> : <Volume2 size={13} />}
+                          </button>
+                          <button onClick={(e) => handleShare(idx, e)} className="hover:text-gold-300 p-0.5 transition-colors cursor-pointer" aria-label="Share">
+                            <Share2 size={13} />
+                          </button>
+                          <button onClick={(e) => handleFullscreen(idx, e)} className="hover:text-gold-300 p-0.5 transition-colors cursor-pointer" aria-label="Fullscreen">
+                            <Maximize2 size={13} />
+                          </button>
                         </div>
                       </div>
-                      
-                      <Link
-                        to={`/product/${item.productId}`}
-                        className="bg-white/15 hover:bg-gold-500 hover:text-stone-950 text-gold-200 rounded-full p-1.5 transition-all duration-300 flex items-center justify-center cursor-pointer shrink-0"
-                        aria-label="View Product Details"
-                      >
-                        <ArrowRight size={10} />
-                      </Link>
-                    </div>
-                  )}
 
-                  {/* Tanishq segmented progress bars at the bottom edge */}
-                  {isActive && (
-                    <div className="absolute bottom-2 inset-x-4 flex gap-1 z-20">
-                      {showcases.map((_, dotIdx) => (
-                        <div 
-                          key={dotIdx}
-                          className={`h-[2px] rounded-full transition-all duration-500 flex-grow ${
-                            dotIdx === activeVideoIdx ? "bg-gold-500" : "bg-white/35"
-                          }`}
-                        />
-                      ))}
-                    </div>
+                      {/* Unmute CTA */}
+                      {isMuted && (
+                        <button
+                          onClick={(e) => { e.preventDefault(); setIsMuted(false); }}
+                          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/60 border border-white/20 hover:bg-gold-500 text-white rounded-lg px-3 py-1.5 text-[9px] uppercase tracking-wider font-bold backdrop-blur-sm z-20 flex items-center gap-1.5 cursor-pointer animate-pulse"
+                        >
+                          <Volume2 size={10} /> Tap to Unmute
+                        </button>
+                      )}
+
+                      {/* Product banner */}
+                      <div className="absolute bottom-7 inset-x-3 bg-black/70 backdrop-blur-md border border-white/10 rounded-xl p-2 flex items-center justify-between gap-2 z-20">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <img src={item.productImg} alt={item.productName} className="w-9 h-9 rounded-lg object-cover border border-white/10 shrink-0" />
+                          <div className="min-w-0">
+                            <h4 className="text-[10px] font-bold text-white font-sans truncate">{item.productName}</h4>
+                            <span className="text-[9px] text-gold-300 font-medium font-sans">{item.productPrice}</span>
+                          </div>
+                        </div>
+                        <Link to={`/product/${item.productId}`} className="bg-gold-500 hover:bg-gold-400 text-white rounded-full p-1.5 transition-all flex items-center justify-center shrink-0">
+                          <ArrowRight size={10} />
+                        </Link>
+                      </div>
+
+                      {/* Progress bars */}
+                      <div className="absolute bottom-3 inset-x-4 flex gap-1 z-20">
+                        {showcases.map((_, di) => (
+                          <div key={di} className={`h-[2px] rounded-full flex-grow transition-all duration-500 ${di === activeVideoIdx ? "bg-gold-400" : "bg-white/25"}`} />
+                        ))}
+                      </div>
+                    </>
                   )}
                 </div>
               );
             })}
 
-            {/* Navigation Arrows */}
+            {/* Arrows */}
             <button
-              onClick={() => setActiveVideoIdx((prev) => (prev - 1 + showcases.length) % showcases.length)}
-              className="absolute left-[-15px] sm:left-[-35px] md:left-[-45px] z-40 bg-black/60 border border-white/15 hover:bg-gold-500 hover:text-stone-950 text-white rounded-full p-2.5 backdrop-blur-sm transition-all duration-300 cursor-pointer shadow-lg"
-              aria-label="Previous Video"
+              onClick={() => setActiveVideoIdx((p) => (p - 1 + showcases.length) % showcases.length)}
+              className="absolute left-[-12px] sm:left-[-40px] z-40 bg-white border border-black/08 hover:bg-gold-500 hover:text-white hover:border-gold-500 text-ink-700 rounded-full p-2.5 transition-all duration-300 cursor-pointer shadow-md"
+              aria-label="Previous"
             >
               <ChevronLeft size={16} />
             </button>
-            
             <button
-              onClick={() => setActiveVideoIdx((prev) => (prev + 1) % showcases.length)}
-              className="absolute right-[-15px] sm:right-[-35px] md:right-[-45px] z-40 bg-black/60 border border-white/15 hover:bg-gold-500 hover:text-stone-950 text-white rounded-full p-2.5 backdrop-blur-sm transition-all duration-300 cursor-pointer shadow-lg"
-              aria-label="Next Video"
+              onClick={() => setActiveVideoIdx((p) => (p + 1) % showcases.length)}
+              className="absolute right-[-12px] sm:right-[-40px] z-40 bg-white border border-black/08 hover:bg-gold-500 hover:text-white hover:border-gold-500 text-ink-700 rounded-full p-2.5 transition-all duration-300 cursor-pointer shadow-md"
+              aria-label="Next"
             >
               <ChevronRight size={16} />
             </button>
@@ -820,104 +626,76 @@ export const Home = ({ addToast }) => {
         </div>
       </section>
 
+      <div className="section-divider" />
 
-
-      {/* 3.2 Quality Assured Trust Center (Kisna & Parakkat Inspired) */}
-      <section className="py-6 sm:py-12 px-4 sm:px-6 bg-stone-950 text-white border-t border-gold-800/25">
-        <div className="max-w-7xl mx-auto text-center space-y-4 sm:space-y-8">
-          <div className="space-y-1 sm:space-y-2">
-            <span className="text-gold-400 font-medium tracking-[0.2em] uppercase text-[9px] sm:text-xs block font-sans">
-              Our Purity Promise
-            </span>
-            <h2 className="font-serif text-base sm:text-3xl text-white">
-              Srushti Quality Standards
-            </h2>
-            <div className="h-0.5 w-10 sm:w-12 bg-gold-500 mx-auto mt-1 sm:mt-2"></div>
+      {/* ════════════════════════════════════════════
+          7 · TRUST CENTER
+      ════════════════════════════════════════════ */}
+      <section className="py-12 sm:py-16 bg-ink-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-10 space-y-1">
+            <span className="text-gold-400 text-[10px] font-semibold tracking-[0.2em] uppercase block font-sans">Our Promise</span>
+            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-white">Quality You Can Trust</h2>
+            <div className="h-px w-12 bg-gold-500 mx-auto mt-3" />
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-            {[
-              {
-                icon: <ShieldCheck className="text-gold-400 w-6 h-6 sm:w-8 h-8 mx-auto" />,
-                title: "100% BIS Hallmarked",
-                desc: "Every gold item is certified 22K (916) by the Government of India."
-              },
-              {
-                icon: <Award className="text-gold-400 w-6 h-6 sm:w-8 h-8 mx-auto" />,
-                title: "Certified Diamonds",
-                desc: "All diamonds are accompanied by authenticity certificates from IGI or GIA."
-              },
-              {
-                icon: <Gem className="text-gold-400 w-6 h-6 sm:w-8 h-8 mx-auto" />,
-                title: "Lifetime Exchange",
-                desc: "Upgrade or exchange your jewelry easily at prevailing market rates anytime."
-              },
-              {
-                icon: <Sparkles className="text-gold-400 w-6 h-6 sm:w-8 h-8 mx-auto" />,
-                title: "Transit Insured",
-                desc: "Free insured delivery. We cover any risk until the package reaches your hands."
-              }
-            ].map((trust, idx) => (
-              <div key={idx} className="bg-stone-900 border border-gold-900/35 p-3 sm:p-6 rounded-xl sm:rounded-2xl flex flex-col items-center text-center gap-1.5 sm:gap-3">
-                {trust.icon}
-                <h3 className="text-[10px] sm:text-sm font-bold text-gold-200 uppercase tracking-wider font-sans">{trust.title}</h3>
-                <p className="text-[8px] sm:text-xs text-stone-400 font-light leading-normal sm:leading-relaxed font-sans">{trust.desc}</p>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+            {trustItems.map((t, i) => (
+              <div key={i} className="bg-white/[0.04] border border-white/[0.07] rounded-2xl p-5 sm:p-6 flex flex-col items-center text-center gap-3 hover:bg-white/[0.07] transition-colors">
+                <div className="w-12 h-12 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center">
+                  {t.icon}
+                </div>
+                <h3 className="text-xs sm:text-sm font-bold text-gold-200 uppercase tracking-wider font-sans">{t.title}</h3>
+                <p className="text-[10px] sm:text-xs text-white/40 font-light leading-relaxed font-sans">{t.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 3.5 Patron Testimonials: Sliding guestbook slider */}
+      <div className="section-divider" />
+
+      {/* ════════════════════════════════════════════
+          8 · TESTIMONIALS
+      ════════════════════════════════════════════ */}
       {reviews.length > 0 && (
-        <section className="py-8 lg:py-14 px-4 sm:px-6 bg-white text-stone-950 border-t border-stone-200">
-          <div className="max-w-4xl mx-auto text-center space-y-5 relative z-10">
-            <div className="space-y-1.5">
-              <span className="text-gold-600 font-medium tracking-[0.2em] uppercase text-[10px] block">
-                Social Proof & Trust
-              </span>
-              <h2 className="font-serif text-lg lg:text-3xl text-stone-900">
-                Patron Testimonials
-              </h2>
-              <div className="h-0.5 w-12 bg-gold-500 mx-auto"></div>
+        <section className="py-12 sm:py-16 bg-white">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+            <div className="mb-8 space-y-1">
+              <span className="section-kicker block">Patron Stories</span>
+              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-ink-900">What Our Clients Say</h2>
+              <div className="h-px w-12 bg-gold-400 mx-auto mt-3" />
             </div>
 
-            <div className="relative min-h-[150px] sm:min-h-[110px] flex items-center justify-center">
+            <div className="relative min-h-[160px] flex items-center justify-center">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentReviewIdx}
-                  initial={{ opacity: 0, y: 15 }}
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.5 }}
-                  className="space-y-4"
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.4 }}
+                  className="space-y-5"
                 >
-                  <Quote className="text-gold-500/25 mx-auto w-7 h-7 rotate-180" />
-                  <p className="font-serif italic text-xs sm:text-lg text-stone-700 font-light leading-relaxed max-w-2xl mx-auto px-4">
+                  <Heart className="text-gold-400 mx-auto w-7 h-7" />
+                  <p className="font-serif italic text-sm sm:text-lg text-ink-700 font-light leading-relaxed max-w-xl mx-auto">
                     "{reviews[currentReviewIdx].comment}"
                   </p>
-                  
-                  <div className="flex flex-col items-center space-y-2">
-                    <div className="flex justify-center text-amber-500 gap-1">
-                      {Array.from({ length: 5 }).map((_, idx) => (
-                        <Star
-                          key={idx}
-                          size={10}
-                          className={idx < reviews[currentReviewIdx].rating ? "fill-amber-500 text-amber-500" : "text-stone-300"}
-                        />
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="flex gap-0.5 text-amber-400">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star key={i} size={12} className={i < reviews[currentReviewIdx].rating ? "fill-amber-400" : "text-ink-200"} />
                       ))}
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2.5">
                       <img
                         src={reviews[currentReviewIdx].avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"}
                         alt={reviews[currentReviewIdx].userName}
-                        className="w-7 h-7 rounded-full object-cover border border-gold-500/30"
+                        className="w-8 h-8 rounded-full object-cover border-2 border-gold-200"
                       />
-                      <div className="text-left text-xs font-light">
-                        <h4 className="font-serif font-bold text-xs text-stone-900 leading-none">
-                          {reviews[currentReviewIdx].userName}
-                        </h4>
-                        <span className="text-[8px] uppercase tracking-widest text-stone-500 block mt-1 leading-none">
+                      <div className="text-left">
+                        <h4 className="font-serif font-semibold text-sm text-ink-900 leading-none">{reviews[currentReviewIdx].userName}</h4>
+                        <span className="text-[9px] uppercase tracking-widest text-ink-400 block mt-0.5">
                           Verified Patron &bull; {reviews[currentReviewIdx].productName}
                         </span>
                       </div>
@@ -927,16 +705,13 @@ export const Home = ({ addToast }) => {
               </AnimatePresence>
             </div>
 
-            {/* Navigation Dots */}
-            <div className="flex justify-center gap-2 pt-1">
-              {reviews.map((_, idx) => (
+            <div className="flex justify-center gap-2 mt-5">
+              {reviews.map((_, i) => (
                 <button
-                  key={idx}
-                  onClick={() => setCurrentReviewIdx(idx)}
-                  className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                    currentReviewIdx === idx ? "bg-gold-500 scale-125" : "bg-stone-200"
-                  }`}
-                  aria-label={`Go to slide ${idx + 1}`}
+                  key={i}
+                  onClick={() => setCurrentReviewIdx(i)}
+                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${i === currentReviewIdx ? "bg-gold-500 w-6" : "bg-ink-200 w-1.5 hover:bg-ink-300"}`}
+                  aria-label={`Review ${i + 1}`}
                 />
               ))}
             </div>

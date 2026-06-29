@@ -4,7 +4,7 @@ import { getProducts, getCategories } from "../services/db";
 import { ProductCard } from "../components/ProductCard";
 import { ProductGridSkeleton } from "../components/LoadingSkeleton";
 import { useCart } from "../context/CartContext";
-import { Search, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, RefreshCw, ChevronLeft, ChevronRight, Flame, Sparkles, SlidersHorizontal, X } from "lucide-react";
 
 export const Collections = ({ addToast }) => {
   const [products, setProducts] = useState([]);
@@ -20,6 +20,7 @@ export const Collections = ({ addToast }) => {
   const [selectedStock, setSelectedStock] = useState("All");
   const [priceRange, setPriceRange] = useState(500000);
   const [sortBy, setSortBy] = useState("default");
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
   // Pagination States
   const [currentPage, setCurrentPage] = useState(1);
@@ -159,14 +160,15 @@ export const Collections = ({ addToast }) => {
   };
 
   return (
-    <div className="bg-gold-50/20 dark:bg-luxury-black transition-colors duration-300 font-sans min-h-screen py-10 px-4 sm:px-6">
+    <div className="page-band transition-colors duration-300 font-sans min-h-screen py-10 sm:py-14 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         {/* Page Header */}
-        <div className="text-left mb-8 space-y-2">
-          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light text-luxury-black dark:text-gold-200 leading-tight">
+        <div className="text-left mb-8 sm:mb-10 space-y-3 animate-slide-up">
+          <span className="section-kicker">Srushti showroom catalog</span>
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-semibold text-luxury-black dark:text-gold-100 leading-tight">
             {selectedCategory === "Wishlist" ? "Your Wishlist" : "Exclusive Showroom Catalog"}
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400 font-light max-w-xl">
+          <p className="text-sm text-stone-600 dark:text-stone-400 font-light max-w-2xl leading-relaxed">
             {selectedCategory === "Wishlist"
               ? "Your curated collection of premium Srushti pieces, saved for your viewing."
               : "Discover handcrafted pieces blending traditional artistry and modern sophistication."}
@@ -174,11 +176,26 @@ export const Collections = ({ addToast }) => {
         </div>
 
         {/* Catalog Main Layout */}
-        <div className="space-y-6">
-          {/* Horizontal Filters (Navbar Style, Less Space) */}
-          <div className="bg-white dark:bg-luxury-charcoal p-4 rounded-3xl border border-gold-100/50 dark:border-stone-850/40 shadow-sm space-y-4">
-            {/* Row 1: Category Scrollable Pills (Horizontal Navbar) */}
-            <div className="overflow-x-auto flex gap-2 pb-2 border-b border-gold-100/10 dark:border-stone-850/20 select-none scrollbar-thin">
+        <div className="space-y-4 sm:space-y-6">
+          {/* Mobile Filters Section (lg:hidden) */}
+          <div className="lg:hidden space-y-2 w-full animate-fade-in">
+            {/* Search Input (100% width) */}
+            <div className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1);
+                }}
+                placeholder="Search catalog..."
+                className="w-full bg-white dark:bg-stone-900 border border-black/10 dark:border-white/10 rounded-full py-1.5 pl-4 pr-10 text-[10.5px] focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
+              />
+              <Search size={11} className="absolute right-3.5 top-2.5 text-gray-400" />
+            </div>
+
+            {/* Scrollable Category pills row */}
+            <div className="overflow-x-auto flex gap-1 pb-0.5 select-none scrollbar-none">
               {categories.map((cat) => (
                 <button
                   key={cat}
@@ -186,10 +203,10 @@ export const Collections = ({ addToast }) => {
                     setSelectedCategory(cat);
                     setCurrentPage(1);
                   }}
-                  className={`text-[11px] px-4 py-2 rounded-xl border whitespace-nowrap transition-all duration-300 cursor-pointer font-bold tracking-wide uppercase ${
+                  className={`text-[8px] px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full border whitespace-nowrap transition-all duration-300 cursor-pointer font-bold tracking-wide uppercase ${
                     selectedCategory === cat
                       ? "bg-gold-500 text-stone-950 border-gold-500 shadow-sm"
-                      : "border-gray-200/50 dark:border-stone-800 text-gray-600 dark:text-gray-400 hover:border-gold-400 hover:text-gold-500"
+                      : "bg-white dark:bg-stone-900/60 border-black/05 dark:border-white/10 text-ink-600 dark:text-stone-300 hover:border-gold-400 hover:text-gold-600"
                   }`}
                 >
                   {cat}
@@ -197,59 +214,166 @@ export const Collections = ({ addToast }) => {
               ))}
             </div>
 
-            {/* Row 2: Filters Dropdown Row & Search */}
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
-              {/* Search input in catalog */}
-              <div className="relative w-full lg:max-w-md">
-                <input
-                  type="text"
-                  value={searchQuery}
+            {/* Scrollable Advanced Filters row */}
+            <div className="overflow-x-auto flex gap-1 pb-1.5 select-none scrollbar-none text-[8.5px]">
+              {/* Metal Select Dropdown */}
+              <div className="bg-white dark:bg-stone-900 border border-black/05 dark:border-white/10 rounded-full px-2 py-0.5 flex items-center text-ink-900 dark:text-stone-200 shrink-0 font-bold uppercase tracking-wider">
+                <select
+                  value={selectedMaterial}
                   onChange={(e) => {
-                    setSearchQuery(e.target.value);
+                    setSelectedMaterial(e.target.value);
                     setCurrentPage(1);
                   }}
-                  placeholder="Search catalog by name or description..."
-                  className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-100/60 dark:border-stone-850/40 text-xs rounded-xl py-2.5 pl-4 pr-10 focus:outline-none focus:border-gold-500 font-light text-luxury-black dark:text-white"
-                />
-                <Search size={14} className="absolute right-3.5 top-3.5 text-gray-400" />
+                  className="bg-transparent text-ink-900 dark:text-stone-200 focus:outline-none cursor-pointer outline-none text-[8.5px] py-0.5 font-bold pr-3.5"
+                >
+                  {materialsList.map((mat) => (
+                    <option key={mat} value={mat} className="bg-white text-ink-900 dark:bg-stone-900 dark:text-stone-100">
+                      {mat === "All" ? "Metal: All" : mat}
+                    </option>
+                  ))}
+                </select>
               </div>
 
-              {/* Advanced Filter Dropdowns */}
-              <div className="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-start lg:justify-end text-xs">
-                {/* Quick Toggle: Best Sellers */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSortBy(sortBy === "bestseller" ? "default" : "bestseller");
+              {/* Price Slider Input */}
+              <div className="bg-white dark:bg-stone-900 border border-black/05 dark:border-white/10 rounded-full px-2 py-0.5 flex items-center gap-1 text-ink-900 dark:text-stone-200 shrink-0 font-bold uppercase tracking-wider">
+                <span>Max: ₹{(priceRange / 1000).toFixed(0)}K</span>
+                <input
+                  type="range"
+                  min="20000"
+                  max="500000"
+                  step="10000"
+                  value={priceRange}
+                  onChange={(e) => {
+                    setPriceRange(parseInt(e.target.value));
                     setCurrentPage(1);
                   }}
-                  className={`px-3 py-2 rounded-xl border transition-all duration-300 cursor-pointer font-semibold uppercase tracking-wider text-[10px] ${
-                    sortBy === "bestseller"
-                      ? "bg-gold-500 text-stone-950 border-gold-500 font-bold"
-                      : "border-gold-200/50 dark:border-stone-850 text-gray-600 dark:text-stone-300 hover:border-gold-400"
-                  }`}
-                >
-                  🔥 Best Sellers
-                </button>
+                  className="w-10 accent-gold-500 bg-gray-200 dark:bg-stone-850 rounded-lg cursor-pointer h-0.5"
+                />
+              </div>
 
-                {/* Quick Toggle: New Arrivals */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSortBy(sortBy === "newest" ? "default" : "newest");
+              {/* Stock Select Dropdown */}
+              <div className="bg-white dark:bg-stone-900 border border-black/05 dark:border-white/10 rounded-full px-2 py-0.5 flex items-center text-ink-900 dark:text-stone-200 shrink-0 font-bold uppercase tracking-wider">
+                <select
+                  value={selectedStock}
+                  onChange={(e) => {
+                    setSelectedStock(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className={`px-3 py-2 rounded-xl border transition-all duration-300 cursor-pointer font-semibold uppercase tracking-wider text-[10px] ${
-                    sortBy === "newest"
-                      ? "bg-gold-500 text-stone-950 border-gold-500 font-bold"
-                      : "border-gold-200/50 dark:border-stone-850 text-gray-600 dark:text-stone-300 hover:border-gold-400"
-                  }`}
+                  className="bg-transparent text-ink-900 dark:text-stone-200 focus:outline-none cursor-pointer outline-none text-[8.5px] py-0.5 font-bold pr-3.5"
                 >
-                  🆕 New Arrivals
-                </button>
+                  <option value="All" className="bg-white text-ink-900 dark:bg-stone-900 dark:text-stone-100">Stock: All</option>
+                  <option value="in-stock" className="bg-white text-ink-900 dark:bg-stone-900 dark:text-stone-100">In Stock</option>
+                  <option value="out-of-stock" className="bg-white text-ink-900 dark:bg-stone-900 dark:text-stone-100">Out of Stock</option>
+                </select>
+              </div>
+
+              {/* Sort By Select Dropdown */}
+              <div className="bg-white dark:bg-stone-900 border border-black/05 dark:border-white/10 rounded-full px-2 py-0.5 flex items-center text-ink-900 dark:text-stone-200 shrink-0 font-bold uppercase tracking-wider">
+                <select
+                  value={sortBy}
+                  onChange={(e) => {
+                    setSortBy(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  className="bg-transparent text-ink-900 dark:text-stone-200 focus:outline-none cursor-pointer outline-none text-[8.5px] py-0.5 font-bold pr-3.5"
+                >
+                  <option value="default" className="bg-white text-ink-900 dark:bg-stone-900 dark:text-stone-100">Sort: Default</option>
+                  <option value="price-low-to-high" className="bg-white text-ink-900 dark:bg-stone-900 dark:text-stone-100">Price: L-to-H</option>
+                  <option value="price-high-to-low" className="bg-white text-ink-900 dark:bg-stone-900 dark:text-stone-100">Price: H-to-L</option>
+                  <option value="rating" className="bg-white text-ink-900 dark:bg-stone-900 dark:text-stone-100">Top Rated</option>
+                  <option value="newest" className="bg-white text-ink-900 dark:bg-stone-900 dark:text-stone-100">Newest</option>
+                  <option value="bestseller" className="bg-white text-ink-900 dark:bg-stone-900 dark:text-stone-100">Bestseller</option>
+                </select>
+              </div>
+
+              {/* Reset Filters Icon Button */}
+              <button
+                onClick={resetFilters}
+                className="bg-white hover:bg-gold-100 dark:bg-stone-850 dark:hover:bg-stone-800 text-luxury-black dark:text-stone-300 px-2 py-0.5 rounded-full transition-all duration-300 cursor-pointer border border-black/05 dark:border-white/10 shrink-0 flex items-center justify-center"
+                title="Reset Filters"
+              >
+                <RefreshCw size={9} />
+              </button>
+            </div>
+          </div>
+
+          {/* Desktop Horizontal Filters (hidden on mobile, lg:block) */}
+          <div className="hidden lg:block surface-luxury p-4 sm:p-5 rounded-2xl space-y-4 animate-fade-in">
+             {/* Row 1: Category Scrollable Pills (Horizontal Navbar) */}
+             <div className="overflow-x-auto flex gap-2 pb-3 border-b border-gold-200/35 dark:border-stone-800/40 select-none scrollbar-thin">
+               {categories.map((cat) => (
+                 <button
+                   key={cat}
+                   onClick={() => {
+                     setSelectedCategory(cat);
+                     setCurrentPage(1);
+                   }}
+                   className={`text-[11px] px-4 py-2 rounded-full border whitespace-nowrap transition-all duration-300 cursor-pointer font-bold tracking-wide uppercase ${
+                     selectedCategory === cat
+                       ? "bg-gold-500 text-stone-950 border-gold-500 shadow-sm"
+                       : "bg-white dark:bg-stone-900/60 border-black/08 dark:border-white/10 text-ink-600 dark:text-stone-300 hover:border-gold-400 hover:text-gold-600 hover:bg-gold-50/20"
+                   }`}
+                 >
+                   {cat}
+                 </button>
+               ))}
+             </div>
+
+             {/* Row 2: Filters Dropdown Row & Search */}
+             <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
+               {/* Search input in catalog */}
+               <div className="relative w-full lg:max-w-md">
+                 <input
+                   type="text"
+                   value={searchQuery}
+                   onChange={(e) => {
+                     setSearchQuery(e.target.value);
+                     setCurrentPage(1);
+                   }}
+                   placeholder="Search catalog by name or description..."
+                   className="w-full catalog-control text-xs py-3 pl-4 pr-10 focus:outline-none font-light text-luxury-black dark:text-white bg-white dark:bg-stone-900"
+                 />
+                 <Search size={14} className="absolute right-3.5 top-3.5 text-gray-400" />
+               </div>
+
+               {/* Advanced Filter Dropdowns */}
+               <div className="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-start lg:justify-end text-xs">
+                 {/* Quick Toggle: Best Sellers */}
+                 <button
+                   type="button"
+                   onClick={() => {
+                     setSortBy(sortBy === "bestseller" ? "default" : "bestseller");
+                     setCurrentPage(1);
+                   }}
+                   className={`px-3 py-2 rounded-full border transition-all duration-300 cursor-pointer font-semibold uppercase tracking-wider text-[10px] inline-flex items-center gap-1.5 ${
+                     sortBy === "bestseller"
+                       ? "bg-gold-500 text-stone-950 border-gold-500 font-bold"
+                       : "bg-white dark:bg-stone-900/60 border-black/08 dark:border-white/10 text-ink-600 dark:text-stone-300 hover:border-gold-400 hover:text-gold-600 hover:bg-gold-50/20"
+                   }`}
+                 >
+                   <Flame size={12} />
+                   Best Sellers
+                 </button>
+
+                 {/* Quick Toggle: New Arrivals */}
+                 <button
+                   type="button"
+                   onClick={() => {
+                     setSortBy(sortBy === "newest" ? "default" : "newest");
+                     setCurrentPage(1);
+                   }}
+                   className={`px-3 py-2 rounded-full border transition-all duration-300 cursor-pointer font-semibold uppercase tracking-wider text-[10px] inline-flex items-center gap-1.5 ${
+                     sortBy === "newest"
+                       ? "bg-gold-500 text-stone-950 border-gold-500 font-bold"
+                       : "bg-white dark:bg-stone-900/60 border-black/08 dark:border-white/10 text-ink-600 dark:text-stone-300 hover:border-gold-400 hover:text-gold-600 hover:bg-gold-50/20"
+                   }`}
+                 >
+                   <Sparkles size={12} />
+                   New Arrivals
+                 </button>
 
                 {/* Material Select */}
-                <div className="flex items-center gap-1.5 bg-stone-50 dark:bg-stone-900 border border-gold-100/60 dark:border-stone-850/40 px-3 py-2 rounded-xl text-gray-600 dark:text-stone-300">
+                <div className="catalog-control flex items-center gap-1.5 px-3 py-2 text-gray-600 dark:text-stone-300">
                   <span className="text-gray-400">Metal:</span>
                   <select
                     value={selectedMaterial}
@@ -268,7 +392,7 @@ export const Collections = ({ addToast }) => {
                 </div>
 
                 {/* Price Select Slider */}
-                <div className="flex items-center gap-2 bg-stone-50 dark:bg-stone-900 border border-gold-100/60 dark:border-stone-850/40 px-3 py-2 rounded-xl text-gray-600 dark:text-stone-300">
+                <div className="catalog-control flex items-center gap-2 px-3 py-2 text-gray-600 dark:text-stone-300">
                   <span className="text-gray-400">Max:</span>
                   <span className="font-bold text-gold-600 dark:text-gold-400">₹{(priceRange / 1000).toFixed(0)}K</span>
                   <input
@@ -286,7 +410,7 @@ export const Collections = ({ addToast }) => {
                 </div>
 
                 {/* Stock Select */}
-                <div className="flex items-center gap-1.5 bg-stone-50 dark:bg-stone-900 border border-gold-100/60 dark:border-stone-850/40 px-3 py-2 rounded-xl text-gray-600 dark:text-stone-300">
+                <div className="catalog-control flex items-center gap-1.5 px-3 py-2 text-gray-600 dark:text-stone-300">
                   <span className="text-gray-400">Stock:</span>
                   <select
                     value={selectedStock}
@@ -303,7 +427,7 @@ export const Collections = ({ addToast }) => {
                 </div>
 
                 {/* Sort By Select */}
-                <div className="flex items-center gap-1.5 bg-stone-50 dark:bg-stone-900 border border-gold-100/60 dark:border-stone-850/40 px-3 py-2 rounded-xl text-gray-600 dark:text-stone-300">
+                <div className="catalog-control flex items-center gap-1.5 px-3 py-2 text-gray-600 dark:text-stone-300">
                   <span className="text-gray-400">Sort:</span>
                   <select
                     value={sortBy}
@@ -325,7 +449,7 @@ export const Collections = ({ addToast }) => {
                 {/* Reset Filters Icon Button */}
                 <button
                   onClick={resetFilters}
-                  className="bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-750 text-luxury-black dark:text-stone-300 p-2.5 rounded-xl transition-all duration-300 cursor-pointer"
+                  className="bg-white hover:bg-gold-100 dark:bg-stone-800 dark:hover:bg-stone-700 text-luxury-black dark:text-stone-300 p-2.5 rounded-full transition-all duration-300 cursor-pointer border border-gold-200/40"
                   title="Reset Filters"
                 >
                   <RefreshCw size={12} />
@@ -339,8 +463,8 @@ export const Collections = ({ addToast }) => {
             {loading ? (
               <ProductGridSkeleton count={itemsPerPage} />
             ) : filteredProducts.length === 0 ? (
-              <div className="bg-white dark:bg-luxury-charcoal py-20 px-6 rounded-3xl border border-gold-100/40 text-center space-y-4">
-                <span className="text-4xl">💎</span>
+              <div className="surface-luxury py-20 px-6 rounded-2xl text-center space-y-4">
+                <Sparkles size={42} className="mx-auto text-gold-500" />
                 <h3 className="font-serif text-2xl font-bold text-luxury-black dark:text-white">
                   No Masterpieces Found
                 </h3>
@@ -349,7 +473,7 @@ export const Collections = ({ addToast }) => {
                 </p>
                 <button
                   onClick={resetFilters}
-                  className="bg-gold-500 hover:bg-gold-600 text-stone-950 px-6 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wide transition-all cursor-pointer"
+                  className="bg-gold-500 hover:bg-gold-600 text-stone-950 px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-wide transition-all cursor-pointer premium-btn"
                 >
                   Show All Products
                 </button>
@@ -364,7 +488,7 @@ export const Collections = ({ addToast }) => {
 
                 {/* Pagination Controls */}
                 {totalPages > 1 && (
-                  <div className="flex items-center justify-center space-x-2 pt-10 border-t border-gold-100/10 dark:border-stone-850/20">
+                  <div className="flex items-center justify-center space-x-2 pt-10 border-t border-gold-200/25 dark:border-stone-800/35">
                     <button
                       onClick={() => handlePageChange(currentPage - 1)}
                       disabled={currentPage === 1}

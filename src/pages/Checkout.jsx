@@ -163,6 +163,16 @@ export const Checkout = ({ addToast }) => {
               <span className="font-medium text-luxury-black dark:text-white">{orderCreated.customerName}</span>
             </div>
             <div className="flex justify-between border-b border-stone-200/40 pb-2">
+              <span className="text-gray-400">Mobile Number</span>
+              <span className="font-medium text-luxury-black dark:text-white">{orderCreated.mobile}</span>
+            </div>
+            <div className="flex justify-between border-b border-stone-200/40 pb-2">
+              <span className="text-gray-400">Shipping Address</span>
+              <span className="font-medium text-luxury-black dark:text-white text-right max-w-[65%] leading-tight text-xs">
+                {orderCreated.address}, {orderCreated.city} - {orderCreated.pincode}
+              </span>
+            </div>
+            <div className="flex justify-between border-b border-stone-200/40 pb-2">
               <span className="text-gray-400">Payment Status</span>
               <span className="font-medium text-gold-600 dark:text-gold-400">{orderCreated.paymentStatus}</span>
             </div>

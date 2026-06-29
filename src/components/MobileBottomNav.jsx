@@ -1,84 +1,45 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useCart } from "../context/CartContext";
-import { useAuth } from "../context/AuthContext";
-import { Home, Compass, Heart, ShoppingBag, User } from "lucide-react";
+import { Home, Compass, BookOpen, Star, Phone } from "lucide-react";
 
 export const MobileBottomNav = () => {
   const location = useLocation();
-  const { cartCount, wishlist } = useCart();
-  const { user } = useAuth();
-  
   const currentPath = location.pathname;
 
   const navItems = [
-    {
-      label: "Home",
-      path: "/",
-      icon: <Home size={20} />
-    },
-    {
-      label: "Explore",
-      path: "/collections",
-      icon: <Compass size={20} />
-    },
-    {
-      label: "Wishlist",
-      path: "/collections?filter=wishlist",
-      icon: <Heart size={20} />,
-      badge: wishlist.length
-    },
-    {
-      label: "Cart",
-      path: "/cart",
-      icon: <ShoppingBag size={20} />,
-      badge: cartCount
-    },
-    {
-      label: "Account",
-      path: "/account",
-      icon: <User size={20} />
-    }
+    { label: "Home",        path: "/",            icon: <Home        size={19} /> },
+    { label: "Collections", path: "/collections", icon: <Compass     size={19} /> },
+    { label: "About",       path: "/about",       icon: <BookOpen    size={19} /> },
+    { label: "Reviews",     path: "/reviews",     icon: <Star        size={19} /> },
+    { label: "Contact",     path: "/contact",     icon: <Phone       size={19} /> }
   ];
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-luxury-black/95 backdrop-blur-md border-t border-gold-200/25 dark:border-stone-850/40 py-2 px-6 flex justify-between items-center shadow-lg transition-colors duration-300 font-sans">
+    <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/96 backdrop-blur-xl border-t border-black/[0.07] py-2 px-3 flex justify-around items-center shadow-[0_-4px_20px_rgba(0,0,0,0.07)] font-sans safe-area-bottom">
       {navItems.map((item) => {
-        const isActive = (() => {
-          if (item.path === "/") {
-            return currentPath === "/";
-          }
-          if (item.label === "Wishlist") {
-            return currentPath === "/collections" && location.search.includes("filter=wishlist");
-          }
-          if (item.label === "Explore") {
-            return currentPath === "/collections" && !location.search.includes("filter=wishlist");
-          }
-          return currentPath.startsWith(item.path.split("?")[0]);
-        })();
+        const isActive = item.path === "/" 
+          ? currentPath === "/" 
+          : currentPath.startsWith(item.path);
 
         return (
           <Link
             key={item.label}
             to={item.path}
-            className={`flex flex-col items-center justify-center relative py-1 text-center shrink-0 w-14 transition-colors ${
+            className={`flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 relative ${
               isActive
-                ? "text-gold-600 dark:text-gold-400 font-semibold"
-                : "text-gray-400 hover:text-gray-600 dark:hover:text-stone-300"
+                ? "text-gold-600"
+                : "text-ink-400 hover:text-ink-700"
             }`}
           >
-            {/* Icon and relative badge */}
             <div className="relative">
               {item.icon}
-              {item.badge !== undefined && item.badge > 0 && (
-                <span className="absolute -top-1.5 -right-2.5 bg-gold-500 text-stone-950 text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                  {item.badge}
-                </span>
-              )}
             </div>
-            
-            {/* Label */}
-            <span className="text-[10px] tracking-wide mt-1 leading-none">{item.label}</span>
+            <span className={`text-[9px] font-medium leading-none tracking-wide ${isActive ? "font-semibold" : ""}`}>
+              {item.label}
+            </span>
+            {isActive && (
+              <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold-500" />
+            )}
           </Link>
         );
       })}

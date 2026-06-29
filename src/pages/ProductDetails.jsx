@@ -6,6 +6,7 @@ import { ProductImage } from "../components/ProductImage";
 import { DetailsSkeleton } from "../components/LoadingSkeleton";
 import { ProductCard } from "../components/ProductCard";
 import { Heart, Share2, ShoppingBag, MessageSquare, ShieldCheck, RefreshCw } from "lucide-react";
+import { animateFlyToCart } from "../utils/animations";
 
 export const ProductDetails = ({ addToast }) => {
   const { id } = useParams();
@@ -117,7 +118,8 @@ Link: ${window.location.href}`;
     return `https://wa.me/${bizNumber}?text=${encodeURIComponent(text)}`;
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e) => {
+    animateFlyToCart(e, product.images?.[selectedImageIdx]);
     addToCart(product, 1);
     addToast(`${product.name} added to cart!`, "success");
   };
@@ -261,7 +263,7 @@ Link: ${window.location.href}`;
             <div className="space-y-4 pt-6 border-t border-gold-200/20">
               <div className="grid grid-cols-2 gap-4">
                 <button
-                  onClick={handleAddToCart}
+                  onClick={(e) => handleAddToCart(e)}
                   disabled={product.stock === 0}
                   className="bg-stone-900 text-white hover:bg-stone-800 dark:bg-stone-850 dark:hover:bg-stone-750 disabled:bg-gray-200 disabled:text-gray-400 dark:disabled:bg-stone-900 dark:disabled:text-stone-750 py-3.5 px-6 rounded-xl text-xs uppercase tracking-wider font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >

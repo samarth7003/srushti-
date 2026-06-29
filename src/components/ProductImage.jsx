@@ -1,32 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 
 // This component renders either the uploaded custom item image or
 // an ultra-premium, dark-themed gold-embellished placeholder.
 export const ProductImage = ({ src, alt, className = "" }) => {
-  // If it's a data URI, external URL, or uploaded blob/path, render standard image element
-  if (
-    src &&
-    (src.startsWith("data:") ||
-      src.startsWith("http") ||
-      src.startsWith("blob:") ||
-      src.startsWith("/uploads/"))
-  ) {
-    return (
-      <img
-        src={src}
-        alt={alt}
-        className={`${className} object-cover`}
-        onError={(e) => {
-          // If the image fails to load, hide this element to let fallback show
-          e.target.style.display = "none";
-        }}
-      />
-    );
-  }
+  const [hasError, setHasError] = useState(false);
 
-  // Otherwise, render an elegant, premium dark-themed placeholder
-  // so the user can easily add their own photographs later.
-  return (
+  const renderPlaceholder = () => (
     <div className={`${className} bg-gradient-to-br from-stone-900 via-stone-950 to-neutral-950 flex flex-col items-center justify-center relative overflow-hidden select-none p-4`}>
       {/* Decorative premium radial gold glow */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(197,168,128,0.06),transparent_70%)]"></div>
@@ -59,4 +38,27 @@ export const ProductImage = ({ src, alt, className = "" }) => {
       </span>
     </div>
   );
+
+  // If it's a data URI, external URL, or uploaded blob/path, render standard image element
+  if (
+    src &&
+    !hasError &&
+    (src.startsWith("data:") ||
+      src.startsWith("http") ||
+      src.startsWith("blob:") ||
+      src.startsWith("/uploads/"))
+  ) {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        className={`${className} object-cover`}
+        onError={() => {
+          setHasError(true);
+        }}
+      />
+    );
+  }
+
+  return renderPlaceholder();
 };

@@ -35,7 +35,7 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen pb-16 md:pb-0 flex flex-col justify-between bg-gold-50/20 dark:bg-luxury-black text-luxury-black dark:text-stone-200 transition-colors duration-300">
+    <div className="min-h-screen pb-16 flex flex-col justify-between bg-ivory-100 text-ink-900 transition-colors duration-300 font-sans">
       <Navbar />
       
       <main className="flex-grow">
@@ -54,6 +54,8 @@ function AppContent() {
         </Routes>
       </main>
 
+
+      <div className="section-divider"></div>
 
       <Footer addToast={addToast} />
       
