@@ -4,29 +4,43 @@ import { Phone, Mail, MapPin, ArrowRight } from "lucide-react";
 import { LogoIcon } from "./LogoIcon";
 
 const InstagramIcon = () => (
-  <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+  <svg viewBox="0 0 24 24" width="20" height="20">
+    <defs>
+      <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="#feda75" />
+        <stop offset="25%" stopColor="#fa7e1e" />
+        <stop offset="50%" stopColor="#d62976" />
+        <stop offset="75%" stopColor="#962fbf" />
+        <stop offset="100%" stopColor="#4f5bd5" />
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="24" height="24" rx="6" fill="url(#ig-grad)" />
+    <g fill="none" stroke="#ffffff" strokeWidth="1.5">
+      <rect x="5.5" y="5.5" width="13" height="13" rx="3.5" />
+      <circle cx="12" cy="12" r="3" />
+      <circle cx="15.75" cy="8.25" r="0.5" fill="#ffffff" />
+    </g>
   </svg>
 );
 
 const FacebookIcon = () => (
-  <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+  <svg viewBox="0 0 24 24" width="20" height="20">
+    <circle cx="12" cy="12" r="12" fill="#1877F2" />
+    <path d="M14 12h-2v7H9.5v-7H8V9.5h1.5v-2c0-1.8.8-2.8 2.5-2.8h1.8v2.1h-1.2c-.8 0-.9.3-.9.9v1.8H14l-.3 2.5z" fill="#ffffff" />
   </svg>
 );
 
 const YoutubeIcon = () => (
-  <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
-    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+  <svg viewBox="0 0 24 24" width="20" height="20">
+    <rect x="0" y="0" width="24" height="24" rx="6" fill="#FF0000" />
+    <polygon points="9.5 7.5 16.5 12 9.5 16.5 9.5 7.5" fill="#ffffff" />
   </svg>
 );
 
 const WhatsappIcon = () => (
-  <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+  <svg viewBox="0 0 24 24" width="20" height="20">
+    <circle cx="12" cy="12" r="12" fill="#25D366" />
+    <path d="M12.012 4.25a7.75 7.75 0 0 0-6.685 11.666l-.545 1.993 2.04-.535a7.747 7.747 0 0 0 5.19 1.127h.5a7.75 7.75 0 0 0 6.685-11.666h-.002a7.75 7.75 0 0 0-7.183-2.585zM15.82 13.91c-.244.686-1.22 1.262-1.74 1.32-.477.054-.925.077-1.464-.08a7.842 7.842 0 0 1-3.238-1.523 18.069 18.069 0 0 1-4.48-4.475 7.834 7.834 0 0 1-1.527-3.24c-.16-.54-.136-.988-.083-1.465.06-.52.637-1.496 1.323-1.74.208-.073.344-.052.483.084.14.137.47.46.643.644.173.184.225.29.33.5.104.207.052.395-.027.552-.08.156-.72.676-.84.815-.12.138-.24.156-.448.052-.208-.104-.88-.324-1.676-1.034-.62-.553-1.038-1.237-1.16-1.446-.12-.208-.01-.321.094-.425.094-.094.208-.24.312-.36.104-.12.138-.208.208-.346.07-.138.035-.26-.017-.364-.052-.104-.47-1.132-.644-1.551-.17-.409-.344-.354-.47-.36h-.4c-.139 0-.365.052-.556.26-.191.208-.73.712-.73 1.734 0 1.022.747 2.009.851 2.147.104.138 1.47 2.245 3.562 3.146.498.215.887.344 1.192.441.503.16.96.137 1.32.083.402-.06 1.229-.503 1.402-.99.172-.487.172-.904.121-.991-.051-.087-.191-.139-.399-.243z" fill="#ffffff" transform="scale(0.8) translate(3, 3)" />
   </svg>
 );
 
@@ -87,7 +101,7 @@ export const Footer = ({ addToast }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-neutral-400 hover:text-gold-400 hover:border-gold-500/40 transition-all duration-200"
+                className="w-9 h-9 flex items-center justify-center hover:scale-110 transition-transform duration-200"
               >
                 {icon}
               </a>
