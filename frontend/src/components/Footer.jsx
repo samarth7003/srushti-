@@ -5,16 +5,7 @@ import { LogoIcon } from "./LogoIcon";
 
 const InstagramIcon = () => (
   <svg viewBox="0 0 24 24" width="20" height="20" style={{ fill: "none", stroke: "none" }}>
-    <defs>
-      <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
-        <stop offset="0%" stopColor="#feda75" />
-        <stop offset="25%" stopColor="#fa7e1e" />
-        <stop offset="50%" stopColor="#d62976" />
-        <stop offset="75%" stopColor="#962fbf" />
-        <stop offset="100%" stopColor="#4f5bd5" />
-      </linearGradient>
-    </defs>
-    <rect x="0" y="0" width="24" height="24" rx="6" fill="url(#ig-grad)" style={{ fill: "url(#ig-grad)", stroke: "none" }} />
+    <rect x="0" y="0" width="24" height="24" rx="6" fill="#E1306C" style={{ fill: "#E1306C", stroke: "none" }} />
     <g fill="none" stroke="#ffffff" strokeWidth="1.5" style={{ fill: "none", stroke: "#ffffff" }}>
       <rect x="5.5" y="5.5" width="13" height="13" rx="3.5" style={{ fill: "none", stroke: "#ffffff" }} />
       <circle cx="12" cy="12" r="3" style={{ fill: "none", stroke: "#ffffff" }} />
