@@ -15,7 +15,7 @@ export const MobileBottomNav = () => {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/96 backdrop-blur-xl border-t border-black/[0.07] py-2 px-3 flex justify-around items-center shadow-[0_-4px_20px_rgba(0,0,0,0.07)] font-sans safe-area-bottom">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/96 backdrop-blur-xl border-t border-black/[0.07] py-2 px-3 flex justify-around items-center shadow-[0_-4px_20px_rgba(0,0,0,0.07)] font-sans safe-area-bottom">
       {navItems.map((item) => {
         const isActive = item.path === "/" 
           ? currentPath === "/" 

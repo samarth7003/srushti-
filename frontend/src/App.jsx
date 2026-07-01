@@ -22,8 +22,11 @@ import { Reviews } from "./pages/Reviews";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { Account } from "./pages/Account";
 
+import { useAuth } from "./context/AuthContext";
+
 function AppContent() {
   const [toasts, setToasts] = useState([]);
+  const { user, authLoading } = useAuth();
 
   const addToast = (message, type = "success") => {
     const id = Date.now() + Math.random().toString(36).substr(2, 5);
@@ -34,8 +37,28 @@ function AppContent() {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-ivory-100">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gold-600"></div>
+      </div>
+    );
+  }
+
+  // If not logged in, force render the login / register form
+  if (!user) {
+    return (
+      <div className="min-h-screen flex flex-col justify-between bg-ivory-100 text-ink-900 transition-colors duration-300 font-sans">
+        <main className="flex-grow flex items-center justify-center py-12">
+          <Account addToast={addToast} />
+        </main>
+        <ToastContainer toasts={toasts} removeToast={removeToast} />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen pb-16 flex flex-col justify-between bg-ivory-100 text-ink-900 transition-colors duration-300 font-sans">
+    <div className="min-h-screen pb-16 md:pb-0 flex flex-col justify-between bg-ivory-100 text-ink-900 transition-colors duration-300 font-sans">
       <Navbar />
       
       <main className="flex-grow">

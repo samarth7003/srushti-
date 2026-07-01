@@ -288,10 +288,10 @@ export const Home = ({ addToast }) => {
       {/* ════════════════════════════════════════════
           2 · SHOP BY CATEGORY
       ════════════════════════════════════════════ */}
-      <section className="py-12 sm:py-16 bg-white">
+      <section className="py-12 sm:py-16 bg-ivory-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-8 sm:mb-10 space-y-1">
-            <span className="section-kicker block">Discover</span>
+          <div className="text-center mb-8 sm:mb-10">
+            <span className="section-kicker">Discover</span>
             <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-ink-900">Shop by Category</h2>
             <div className="h-px w-14 bg-gold-400 mx-auto mt-3" />
           </div>
@@ -330,10 +330,10 @@ export const Home = ({ addToast }) => {
       {/* ════════════════════════════════════════════
           3 · BEST SELLERS
       ════════════════════════════════════════════ */}
-      <section className="py-12 sm:py-16 bg-ivory-100">
+      <section className="py-12 sm:py-16 bg-ivory-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-8 sm:mb-10 space-y-1">
-            <span className="section-kicker block">Most Loved</span>
+          <div className="text-center mb-8 sm:mb-10">
+            <span className="section-kicker">Most Loved</span>
             <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-ink-900">Best Sellers</h2>
             <div className="h-px w-14 bg-gold-400 mx-auto mt-3" />
           </div>
@@ -366,8 +366,8 @@ export const Home = ({ addToast }) => {
       ════════════════════════════════════════════ */}
       <section className="py-12 sm:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-8 sm:mb-10 space-y-1">
-            <span className="section-kicker block">Curated for You</span>
+          <div className="text-center mb-8 sm:mb-10">
+            <span className="section-kicker">Curated for You</span>
             <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-ink-900">Explore Collections</h2>
             <div className="h-px w-14 bg-gold-400 mx-auto mt-3" />
           </div>
@@ -485,10 +485,10 @@ export const Home = ({ addToast }) => {
       {/* ════════════════════════════════════════════
           5 · TRENDING NOW
       ════════════════════════════════════════════ */}
-      <section className="py-12 sm:py-16 bg-ivory-100">
+      <section className="py-12 sm:py-16 bg-ivory-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-8 sm:mb-10 space-y-1">
-            <span className="section-kicker block">What's Hot</span>
+          <div className="text-center mb-8 sm:mb-10">
+            <span className="section-kicker">What's Hot</span>
             <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-ink-900">Trending Now</h2>
             <div className="h-px w-14 bg-gold-400 mx-auto mt-3" />
           </div>
@@ -521,8 +521,8 @@ export const Home = ({ addToast }) => {
       ════════════════════════════════════════════ */}
       <section className="py-12 sm:py-16 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-8 sm:mb-10 space-y-1">
-            <span className="section-kicker block">In Motion</span>
+          <div className="text-center mb-8 sm:mb-10">
+            <span className="section-kicker">In Motion</span>
             <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-ink-900">Srushti Showcases</h2>
             <div className="h-px w-14 bg-gold-400 mx-auto mt-3" />
           </div>
@@ -633,8 +633,8 @@ export const Home = ({ addToast }) => {
       ════════════════════════════════════════════ */}
       <section className="py-12 sm:py-16 bg-ink-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-8 sm:mb-10 space-y-1">
-            <span className="text-gold-400 text-[10px] font-semibold tracking-[0.2em] uppercase block font-sans">Our Promise</span>
+          <div className="text-center mb-8 sm:mb-10">
+            <span className="section-kicker">Our Promise</span>
             <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-white">Quality You Can Trust</h2>
             <div className="h-px w-12 bg-gold-500 mx-auto mt-3" />
           </div>
@@ -659,11 +659,11 @@ export const Home = ({ addToast }) => {
           8 · TESTIMONIALS
       ════════════════════════════════════════════ */}
       {reviews.length > 0 && (
-        <section className="py-12 sm:py-16 bg-white">
+        <section className="py-12 sm:py-16 bg-ivory-100">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-            <div className="mb-8 space-y-1">
-              <span className="section-kicker block">Patron Stories</span>
-              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-ink-900">What Our Clients Say</h2>
+            <div className="mb-8 text-center">
+              <span className="section-kicker">Patron Stories</span>
+              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-ink-900 block mt-1">What Our Clients Say</h2>
               <div className="h-px w-12 bg-gold-400 mx-auto mt-3" />
             </div>
 

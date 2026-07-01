@@ -270,78 +270,74 @@ export const Account = ({ addToast }) => {
 
   // Render customer Login & Registration Tab form
   return (
-    <div className="bg-gold-50/20 dark:bg-luxury-black transition-colors duration-300 font-sans min-h-screen py-16 px-6 flex items-center justify-center">
-      <div className="max-w-md w-full bg-white dark:bg-luxury-charcoal p-8 rounded-3xl border border-gold-200/50 dark:border-stone-850/40 shadow-2xl space-y-6 text-center animate-scale-up">
+    <div className="w-full max-w-md mx-auto px-4">
+      <div className="bg-white border border-black/[0.06] p-8 rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.03)] space-y-6 text-center animate-scale-up">
         
         {/* Brand Logo Header */}
-        <div className="flex flex-col items-center select-none mb-4">
-          <LogoIcon className="w-12 h-12 text-gold-500 mb-2" />
-          <span className="font-serif text-2xl font-bold tracking-widest text-luxury-black dark:text-gold-200 leading-none">
+        <div className="flex flex-col items-center select-none mb-2">
+          <LogoIcon className="w-10 h-10 text-gold-500 mb-2" />
+          <span className="font-serif text-xl font-semibold tracking-[0.2em] text-ink-900 uppercase leading-none">
             SRUSHTI
           </span>
-          <span className="text-[9px] tracking-[0.3em] font-light text-gold-600 dark:text-gold-400 mt-1">
+          <span className="text-[8px] tracking-[0.3em] font-light text-gold-600 uppercase mt-1">
             JEWELLERY
           </span>
         </div>
 
         {/* Toggle tabs */}
-        <div className="flex border-b border-gold-200/20 text-xs font-semibold uppercase tracking-wider pb-1">
+        <div className="flex border-b border-black/[0.06] text-xs uppercase tracking-wider">
           <button
             onClick={() => setFormTab("login")}
-            className={`w-1/2 pb-3 font-semibold transition-all relative cursor-pointer ${
+            className={`w-1/2 pb-3 font-medium transition-all relative cursor-pointer ${
               formTab === "login"
-                ? "text-gold-500 font-bold"
-                : "text-gray-400 hover:text-gray-600 dark:hover:text-white"
+                ? "text-gold-600 font-bold"
+                : "text-ink-400 hover:text-ink-900"
             }`}
           >
-            <div className="flex items-center justify-center gap-1.5">
-              <Lock size={12} /> Login Account
-            </div>
-            {formTab === "login" && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold-500"></span>}
+            Sign In
+            {formTab === "login" && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold-600"></span>}
           </button>
           
           <button
             onClick={() => setFormTab("register")}
-            className={`w-1/2 pb-3 font-semibold transition-all relative cursor-pointer ${
+            className={`w-1/2 pb-3 font-medium transition-all relative cursor-pointer ${
               formTab === "register"
-                ? "text-gold-500 font-bold"
-                : "text-gray-400 hover:text-gray-600 dark:hover:text-white"
+                ? "text-gold-600 font-bold"
+                : "text-ink-400 hover:text-ink-900"
             }`}
           >
-            <div className="flex items-center justify-center gap-1.5">
-              <UserPlus size={12} /> Create Account
-            </div>
-            {formTab === "register" && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold-500"></span>}
+            Register
+            {formTab === "register" && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold-600"></span>}
           </button>
         </div>
 
         {/* Tab content rendering */}
         {formTab === "login" ? (
           /* LOGIN FORM */
-          <form onSubmit={handleLoginSubmit} className="space-y-4 text-left font-light">
-            <div className="text-left mb-4">
-              <h2 className="font-serif text-2xl font-bold text-luxury-black dark:text-white">
-                Welcome to Srushti
+          <form onSubmit={handleLoginSubmit} className="space-y-4 text-left">
+            <div className="text-center sm:text-left mb-2">
+              <h2 className="font-serif text-lg font-bold text-ink-900">
+                Welcome Back
               </h2>
-              <p className="text-gray-400 text-xs mt-1">
-                Enter your credentials to browse order shipments and access boutique wishlists.
+              <p className="text-ink-400 text-[11px] mt-0.5 font-light">
+                Sign in to view your orders and manage saved items.
               </p>
             </div>
 
             <div className="space-y-1">
-              <label className="text-[10px] font-semibold text-gray-500 uppercase">Email Address</label>
+              <label className="text-[9px] font-semibold text-ink-400 uppercase tracking-wider block">Email Address</label>
               <input
                 type="email"
                 required
                 value={loginEmail}
                 onChange={(e) => setLoginEmail(e.target.value)}
-                placeholder="E.g. aarav@gmail.com"
-                className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
+                placeholder="email@example.com"
+                className="w-full bg-stone-50 border border-black/10 rounded-lg p-2.5 text-xs focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 text-ink-900"
               />
             </div>
             
             <div className="space-y-1">
-              <label className="text-[10px] font-semibold text-gray-500 uppercase">Password</label>
+              <label className="text-[9px] font-semibold text-ink-400 uppercase tracking-wider block">Password</label>
               <div className="relative">
                 <input
                   type={showLoginPassword ? "text" : "password"}
@@ -349,14 +345,14 @@ export const Account = ({ addToast }) => {
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 pr-10 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
+                  className="w-full bg-stone-50 border border-black/10 rounded-lg p-2.5 pr-10 text-xs focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 text-ink-900"
                 />
                 <button
                   type="button"
                   onClick={() => setShowLoginPassword(!showLoginPassword)}
-                  className="absolute right-3 top-3.5 text-gray-400 hover:text-gold-500 transition-colors"
+                  className="absolute right-3 top-2.5 text-ink-400 hover:text-gold-600 transition-colors"
                 >
-                  {showLoginPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  {showLoginPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
             </div>
@@ -364,49 +360,49 @@ export const Account = ({ addToast }) => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gold-500 hover:bg-gold-600 disabled:bg-gold-200 text-stone-950 font-bold uppercase tracking-wider py-4 rounded-xl text-xs transition-all shadow-md flex items-center justify-center cursor-pointer"
+              className="w-full bg-ink-900 hover:bg-gold-600 text-white hover:text-ink-950 font-bold uppercase tracking-wider py-3 rounded-lg text-[10px] transition-all duration-300 shadow-sm flex items-center justify-center cursor-pointer"
             >
-              {loading ? "Verifying..." : "Sign In Securely"}
+              {loading ? "Verifying..." : "Sign In"}
             </button>
           </form>
         ) : (
           /* CREATE ACCOUNT FORM */
-          <form onSubmit={handleRegisterSubmit} className="space-y-4 text-left font-light">
-            <div className="text-left mb-4">
-              <h2 className="font-serif text-2xl font-bold text-luxury-black dark:text-white">
+          <form onSubmit={handleRegisterSubmit} className="space-y-4 text-left">
+            <div className="text-center sm:text-left mb-2">
+              <h2 className="font-serif text-lg font-bold text-ink-900">
                 Create Account
               </h2>
-              <p className="text-gray-400 text-xs mt-1">
-                Register by email and password to start saving designs and tracking boutique purchases.
+              <p className="text-ink-400 text-[11px] mt-0.5 font-light">
+                Sign up to save products and track purchases.
               </p>
             </div>
 
             <div className="space-y-1">
-              <label className="text-[10px] font-semibold text-gray-500 uppercase">Full Name</label>
+              <label className="text-[9px] font-semibold text-ink-400 uppercase tracking-wider block">Full Name</label>
               <input
                 type="text"
                 required
                 value={regName}
                 onChange={(e) => setRegName(e.target.value)}
-                placeholder="E.g. Aarav Mehta"
-                className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
+                placeholder="Full Name"
+                className="w-full bg-stone-50 border border-black/10 rounded-lg p-2.5 text-xs focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 text-ink-900"
               />
             </div>
 
             <div className="space-y-1">
-              <label className="text-[10px] font-semibold text-gray-500 uppercase">Email Address</label>
+              <label className="text-[9px] font-semibold text-ink-400 uppercase tracking-wider block">Email Address</label>
               <input
                 type="email"
                 required
                 value={regEmail}
                 onChange={(e) => setRegEmail(e.target.value)}
-                placeholder="E.g. aarav@gmail.com"
-                className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
+                placeholder="email@example.com"
+                className="w-full bg-stone-50 border border-black/10 rounded-lg p-2.5 text-xs focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 text-ink-900"
               />
             </div>
             
             <div className="space-y-1">
-              <label className="text-[10px] font-semibold text-gray-500 uppercase">Password (Min 5 chars)</label>
+              <label className="text-[9px] font-semibold text-ink-400 uppercase tracking-wider block">Password (Min 5 chars)</label>
               <div className="relative">
                 <input
                   type={showRegPassword ? "text" : "password"}
@@ -414,20 +410,20 @@ export const Account = ({ addToast }) => {
                   value={regPassword}
                   onChange={(e) => setRegPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 pr-10 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white font-medium"
+                  className="w-full bg-stone-50 border border-black/10 rounded-lg p-2.5 pr-10 text-xs focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 text-ink-900"
                 />
                 <button
                   type="button"
                   onClick={() => setShowRegPassword(!showRegPassword)}
-                  className="absolute right-3 top-3.5 text-gray-400 hover:text-gold-500 transition-colors"
+                  className="absolute right-3 top-2.5 text-ink-400 hover:text-gold-600 transition-colors"
                 >
-                  {showRegPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  {showRegPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
             </div>
 
             <div className="space-y-1">
-              <label className="text-[10px] font-semibold text-gray-500 uppercase">Confirm Password</label>
+              <label className="text-[9px] font-semibold text-ink-400 uppercase tracking-wider block">Confirm Password</label>
               <div className="relative">
                 <input
                   type={showConfirmPassword ? "text" : "password"}
@@ -435,14 +431,14 @@ export const Account = ({ addToast }) => {
                   value={regConfirmPassword}
                   onChange={(e) => setRegConfirmPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 pr-10 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white font-medium"
+                  className="w-full bg-stone-50 border border-black/10 rounded-lg p-2.5 pr-10 text-xs focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 text-ink-900"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-3.5 text-gray-400 hover:text-gold-500 transition-colors"
+                  className="absolute right-3 top-2.5 text-ink-400 hover:text-gold-600 transition-colors"
                 >
-                  {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  {showConfirmPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
             </div>
@@ -450,7 +446,7 @@ export const Account = ({ addToast }) => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gold-500 hover:bg-gold-600 disabled:bg-gold-200 text-stone-950 font-bold uppercase tracking-wider py-4 rounded-xl text-xs transition-all shadow-md flex items-center justify-center cursor-pointer"
+              className="w-full bg-ink-900 hover:bg-gold-600 text-white hover:text-ink-950 font-bold uppercase tracking-wider py-3 rounded-lg text-[10px] transition-all duration-300 shadow-sm flex items-center justify-center cursor-pointer"
             >
               {loading ? "Registering..." : "Create Account"}
             </button>
@@ -458,10 +454,10 @@ export const Account = ({ addToast }) => {
         )}
 
         {/* Quick redirect links details */}
-        <div className="bg-stone-50 dark:bg-stone-900/60 p-4 rounded-xl text-[10px] text-gray-400 font-light border border-stone-200/10 flex items-center justify-center gap-1">
+        <div className="bg-stone-50 p-3 rounded-lg text-[9px] text-ink-400 font-light border border-black/[0.04] flex items-center justify-center gap-1">
           🔐 Staff member?
-          <Link to="/admin" className="font-bold text-gold-500 hover:underline">
-            Go to Admin Boutique Access &rarr;
+          <Link to="/admin" className="font-bold text-gold-600 hover:underline">
+            Go to Admin Login &rarr;
           </Link>
         </div>
       </div>

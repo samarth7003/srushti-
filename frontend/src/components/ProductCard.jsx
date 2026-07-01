@@ -37,7 +37,7 @@ export const ProductCard = ({ product, addToast, compact = false }) => {
   /* ── COMPACT VARIANT (used in horizontal scrollers) ── */
   if (compact) {
     return (
-      <div className="group relative bg-white rounded-xl border border-black/[0.06] overflow-hidden shine-card hover:shadow-[0_8px_28px_rgba(0,0,0,0.10)] hover:-translate-y-1 transition-all duration-300 flex flex-col font-sans">
+      <div className="group relative bg-white rounded-xl border border-black/[0.05] shadow-[0_4px_16px_rgba(0,0,0,0.02)] overflow-hidden shine-card hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 flex flex-col font-sans">
         {/* Badge */}
         {product.isNew && (
           <div className="absolute top-2 left-2 z-10">
@@ -108,7 +108,7 @@ export const ProductCard = ({ product, addToast, compact = false }) => {
 
   /* ── STANDARD VARIANT ────────────────────────────── */
   return (
-    <div className="group relative bg-white rounded-2xl border border-black/[0.06] overflow-hidden shine-card hover:shadow-[0_16px_48px_rgba(0,0,0,0.10)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col font-sans">
+    <div className="group relative bg-white rounded-2xl border border-black/[0.05] shadow-[0_6px_24px_rgba(0,0,0,0.02)] overflow-hidden shine-card hover:shadow-[0_20px_48px_rgba(0,0,0,0.08)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col font-sans">
       {/* Badges */}
       <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1">
         {product.isNew && (
