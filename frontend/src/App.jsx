@@ -48,7 +48,7 @@ function AppContent() {
   // If not logged in, force render the login / register form
   if (!user) {
     return (
-      <div className="min-h-screen flex flex-col justify-between bg-ivory-100 text-ink-900 transition-colors duration-300 font-sans">
+      <div className="min-h-screen flex flex-col justify-between bg-white text-ink-900 transition-colors duration-300 font-sans">
         <main className="flex-grow flex items-center justify-center py-12">
           <Account addToast={addToast} />
         </main>
@@ -58,7 +58,7 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen pb-16 md:pb-0 flex flex-col justify-between bg-ivory-100 text-ink-900 transition-colors duration-300 font-sans">
+    <div className="min-h-screen pb-16 md:pb-0 flex flex-col justify-between bg-white text-ink-900 transition-colors duration-300 font-sans">
       <Navbar />
       
       <main className="flex-grow">
