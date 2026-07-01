@@ -37,11 +37,11 @@ export const ProductCard = ({ product, addToast, compact = false }) => {
   /* ── COMPACT VARIANT (used in horizontal scrollers) ── */
   if (compact) {
     return (
-      <div className="group relative bg-white rounded-xl border border-black/[0.05] shadow-[0_4px_16px_rgba(0,0,0,0.02)] overflow-hidden shine-card hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 flex flex-col font-sans">
+      <div className="group relative bg-gradient-to-br from-gold-400 to-gold-600 rounded-xl border border-gold-300/30 shadow-[0_4px_16px_rgba(176,141,69,0.12)] overflow-hidden shine-card hover:shadow-[0_12px_32px_rgba(176,141,69,0.22)] hover:-translate-y-1 transition-all duration-300 flex flex-col font-sans">
         {/* Badge */}
         {product.isNew && (
           <div className="absolute top-2 left-2 z-10">
-            <span className="bg-gold-500 text-white text-[8px] uppercase font-bold px-2 py-0.5 rounded-full tracking-wider">
+            <span className="bg-white text-gold-600 text-[8px] uppercase font-bold px-2 py-0.5 rounded-full tracking-wider shadow-sm">
               New
             </span>
           </div>
@@ -76,25 +76,25 @@ export const ProductCard = ({ product, addToast, compact = false }) => {
         </Link>
 
         {/* Info */}
-        <div className="p-1.5 sm:p-3 bg-white space-y-1 sm:space-y-1.5">
+        <div className="p-1.5 sm:p-3 bg-transparent space-y-1 sm:space-y-1.5">
           <div>
             <Link to={`/product/${product.id}`}>
-              <h3 className="font-serif font-semibold text-[9.5px] sm:text-xs md:text-sm text-ink-900 line-clamp-1 leading-snug hover:text-gold-600 transition-colors">
+              <h3 className="font-serif font-semibold text-[9.5px] sm:text-xs md:text-sm text-white line-clamp-1 leading-snug hover:text-white/80 transition-colors">
                 {product.name}
               </h3>
             </Link>
-            <span className="text-[7px] sm:text-[9px] uppercase tracking-wider text-ink-400 font-medium block leading-none mt-0.5">
+            <span className="text-[7px] sm:text-[9px] uppercase tracking-wider text-white/85 font-medium block leading-none mt-0.5">
               {product.material} &bull; {product.category}
             </span>
           </div>
-          <div className="flex items-center justify-between pt-1 border-t border-black/[0.04] gap-1">
-            <span className="font-sans font-semibold text-[9.5px] sm:text-sm text-gold-600 shrink-0">
+          <div className="flex items-center justify-between pt-1 border-t border-white/20 gap-1">
+            <span className="font-sans font-semibold text-[9.5px] sm:text-sm text-white shrink-0">
               {formatPrice(product.price)}
             </span>
             <button
               onClick={handleAddToCart}
               disabled={product.stock === 0}
-              className="flex items-center justify-center bg-ink-900 hover:bg-gold-500 disabled:bg-ink-200 disabled:text-ink-400 text-white p-1 sm:px-2.5 sm:py-1 rounded-full transition-all duration-200 cursor-pointer shrink-0"
+              className="flex items-center justify-center bg-white hover:bg-ink-950 text-ink-950 hover:text-white disabled:bg-white/50 disabled:text-white/80 p-1 sm:px-2.5 sm:py-1 rounded-full transition-all duration-200 cursor-pointer shrink-0 font-bold"
               title="Add to Cart"
             >
               <ShoppingCart size={9} className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
@@ -108,11 +108,11 @@ export const ProductCard = ({ product, addToast, compact = false }) => {
 
   /* ── STANDARD VARIANT ────────────────────────────── */
   return (
-    <div className="group relative bg-white rounded-2xl border border-black/[0.05] shadow-[0_6px_24px_rgba(0,0,0,0.02)] overflow-hidden shine-card hover:shadow-[0_20px_48px_rgba(0,0,0,0.08)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col font-sans">
+    <div className="group relative bg-gradient-to-br from-gold-400 to-gold-600 rounded-2xl border border-gold-300/30 shadow-[0_6px_24px_rgba(176,141,69,0.12)] overflow-hidden shine-card hover:shadow-[0_20px_48px_rgba(176,141,69,0.22)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col font-sans">
       {/* Badges */}
       <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1">
         {product.isNew && (
-          <span className="bg-gold-500 text-white text-[7.5px] sm:text-[8px] uppercase font-bold px-2 py-0.5 rounded-full tracking-wider shadow-sm">
+          <span className="bg-white text-gold-600 text-[7.5px] sm:text-[8px] uppercase font-bold px-2 py-0.5 rounded-full tracking-wider shadow-sm">
             New
           </span>
         )}
@@ -163,29 +163,29 @@ export const ProductCard = ({ product, addToast, compact = false }) => {
       </Link>
 
       {/* Info */}
-      <div className="p-2.5 sm:p-4 bg-white space-y-2.5 sm:space-y-3">
+      <div className="p-2.5 sm:p-4 bg-transparent space-y-2.5 sm:space-y-3">
         <div>
           {/* Name */}
           <Link to={`/product/${product.id}`} className="block">
-            <h3 className="font-serif font-semibold text-[13px] sm:text-base md:text-[17px] text-ink-900 line-clamp-1 leading-snug hover:text-gold-600 transition-colors">
+            <h3 className="font-serif font-semibold text-[13px] sm:text-base md:text-[17px] text-white line-clamp-1 leading-snug hover:text-white/80 transition-colors">
               {product.name}
             </h3>
           </Link>
           {/* Material & Category */}
-          <p className="text-[8px] sm:text-[10px] font-sans font-light text-ink-400 uppercase tracking-widest mt-1">
+          <p className="text-[8px] sm:text-[10px] font-sans font-light text-white/80 uppercase tracking-widest mt-1">
             {product.material} &bull; {product.category}
           </p>
         </div>
 
         {/* Price + Add to Cart */}
-        <div className="flex items-center justify-between pt-2 border-t border-black/[0.04]">
-          <span className="font-sans font-bold text-xs sm:text-base md:text-lg text-gold-600">
+        <div className="flex items-center justify-between pt-2 border-t border-white/20">
+          <span className="font-sans font-bold text-xs sm:text-base md:text-lg text-white">
             {formatPrice(product.price)}
           </span>
           <button
             onClick={handleAddToCart}
             disabled={product.stock === 0}
-            className="flex items-center gap-1 bg-ink-900 hover:bg-gold-500 disabled:bg-ink-100 disabled:text-ink-400 text-white font-bold px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[8px] sm:text-[10px] uppercase tracking-wider transition-colors cursor-pointer"
+            className="flex items-center gap-1 bg-white hover:bg-ink-950 text-ink-950 hover:text-white disabled:bg-white/50 disabled:text-white/80 font-bold px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[8px] sm:text-[10px] uppercase tracking-wider transition-colors cursor-pointer"
           >
             <ShoppingCart size={9} className="sm:w-3 sm:h-3" />
             <span className="hidden sm:inline">Add to Cart</span>
