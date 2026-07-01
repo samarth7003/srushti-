@@ -4,7 +4,7 @@ import { Phone, Mail, MapPin, ArrowRight } from "lucide-react";
 import { LogoIcon } from "./LogoIcon";
 
 const InstagramIcon = () => (
-  <svg viewBox="0 0 24 24" width="20" height="20">
+  <svg viewBox="0 0 24 24" width="20" height="20" style={{ fill: "none", stroke: "none" }}>
     <defs>
       <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
         <stop offset="0%" stopColor="#feda75" />
@@ -14,33 +14,33 @@ const InstagramIcon = () => (
         <stop offset="100%" stopColor="#4f5bd5" />
       </linearGradient>
     </defs>
-    <rect x="0" y="0" width="24" height="24" rx="6" fill="url(#ig-grad)" />
-    <g fill="none" stroke="#ffffff" strokeWidth="1.5">
-      <rect x="5.5" y="5.5" width="13" height="13" rx="3.5" />
-      <circle cx="12" cy="12" r="3" />
-      <circle cx="15.75" cy="8.25" r="0.5" fill="#ffffff" />
+    <rect x="0" y="0" width="24" height="24" rx="6" fill="url(#ig-grad)" style={{ fill: "url(#ig-grad)", stroke: "none" }} />
+    <g fill="none" stroke="#ffffff" strokeWidth="1.5" style={{ fill: "none", stroke: "#ffffff" }}>
+      <rect x="5.5" y="5.5" width="13" height="13" rx="3.5" style={{ fill: "none", stroke: "#ffffff" }} />
+      <circle cx="12" cy="12" r="3" style={{ fill: "none", stroke: "#ffffff" }} />
+      <circle cx="15.75" cy="8.25" r="0.5" fill="#ffffff" style={{ fill: "#ffffff", stroke: "none" }} />
     </g>
   </svg>
 );
 
 const FacebookIcon = () => (
-  <svg viewBox="0 0 24 24" width="20" height="20">
-    <circle cx="12" cy="12" r="12" fill="#1877F2" />
-    <path d="M14 12h-2v7H9.5v-7H8V9.5h1.5v-2c0-1.8.8-2.8 2.5-2.8h1.8v2.1h-1.2c-.8 0-.9.3-.9.9v1.8H14l-.3 2.5z" fill="#ffffff" />
+  <svg viewBox="0 0 24 24" width="20" height="20" style={{ fill: "none", stroke: "none" }}>
+    <circle cx="12" cy="12" r="12" fill="#1877F2" style={{ fill: "#1877F2", stroke: "none" }} />
+    <path d="M14 12h-2v7H9.5v-7H8V9.5h1.5v-2c0-1.8.8-2.8 2.5-2.8h1.8v2.1h-1.2c-.8 0-.9.3-.9.9v1.8H14l-.3 2.5z" fill="#ffffff" style={{ fill: "#ffffff", stroke: "none" }} />
   </svg>
 );
 
 const YoutubeIcon = () => (
-  <svg viewBox="0 0 24 24" width="20" height="20">
-    <rect x="0" y="0" width="24" height="24" rx="6" fill="#FF0000" />
-    <polygon points="9.5 7.5 16.5 12 9.5 16.5 9.5 7.5" fill="#ffffff" />
+  <svg viewBox="0 0 24 24" width="20" height="20" style={{ fill: "none", stroke: "none" }}>
+    <rect x="0" y="0" width="24" height="24" rx="6" fill="#FF0000" style={{ fill: "#FF0000", stroke: "none" }} />
+    <polygon points="9.5 7.5 16.5 12 9.5 16.5 9.5 7.5" fill="#ffffff" style={{ fill: "#ffffff", stroke: "none" }} />
   </svg>
 );
 
 const WhatsappIcon = () => (
-  <svg viewBox="0 0 24 24" width="20" height="20">
-    <circle cx="12" cy="12" r="12" fill="#25D366" />
-    <path d="M12.012 4.25a7.75 7.75 0 0 0-6.685 11.666l-.545 1.993 2.04-.535a7.747 7.747 0 0 0 5.19 1.127h.5a7.75 7.75 0 0 0 6.685-11.666h-.002a7.75 7.75 0 0 0-7.183-2.585zM15.82 13.91c-.244.686-1.22 1.262-1.74 1.32-.477.054-.925.077-1.464-.08a7.842 7.842 0 0 1-3.238-1.523 18.069 18.069 0 0 1-4.48-4.475 7.834 7.834 0 0 1-1.527-3.24c-.16-.54-.136-.988-.083-1.465.06-.52.637-1.496 1.323-1.74.208-.073.344-.052.483.084.14.137.47.46.643.644.173.184.225.29.33.5.104.207.052.395-.027.552-.08.156-.72.676-.84.815-.12.138-.24.156-.448.052-.208-.104-.88-.324-1.676-1.034-.62-.553-1.038-1.237-1.16-1.446-.12-.208-.01-.321.094-.425.094-.094.208-.24.312-.36.104-.12.138-.208.208-.346.07-.138.035-.26-.017-.364-.052-.104-.47-1.132-.644-1.551-.17-.409-.344-.354-.47-.36h-.4c-.139 0-.365.052-.556.26-.191.208-.73.712-.73 1.734 0 1.022.747 2.009.851 2.147.104.138 1.47 2.245 3.562 3.146.498.215.887.344 1.192.441.503.16.96.137 1.32.083.402-.06 1.229-.503 1.402-.99.172-.487.172-.904.121-.991-.051-.087-.191-.139-.399-.243z" fill="#ffffff" transform="scale(0.8) translate(3, 3)" />
+  <svg viewBox="0 0 24 24" width="20" height="20" style={{ fill: "none", stroke: "none" }}>
+    <circle cx="12" cy="12" r="12" fill="#25D366" style={{ fill: "#25D366", stroke: "none" }} />
+    <path d="M12.012 4.25a7.75 7.75 0 0 0-6.685 11.666l-.545 1.993 2.04-.535a7.747 7.747 0 0 0 5.19 1.127h.5a7.75 7.75 0 0 0 6.685-11.666h-.002a7.75 7.75 0 0 0-7.183-2.585zM15.82 13.91c-.244.686-1.22 1.262-1.74 1.32-.477.054-.925.077-1.464-.08a7.842 7.842 0 0 1-3.238-1.523 18.069 18.069 0 0 1-4.48-4.475 7.834 7.834 0 0 1-1.527-3.24c-.16-.54-.136-.988-.083-1.465.06-.52.637-1.496 1.323-1.74.208-.073.344-.052.483.084.14.137.47.46.643.644.173.184.225.29.33.5.104.207.052.395-.027.552-.08.156-.72.676-.84.815-.12.138-.24.156-.448.052-.208-.104-.88-.324-1.676-1.034-.62-.553-1.038-1.237-1.16-1.446-.12-.208-.01-.321.094-.425.094-.094.208-.24.312-.36.104-.12.138-.208.208-.346.07-.138.035-.26-.017-.364-.052-.104-.47-1.132-.644-1.551-.17-.409-.344-.354-.47-.36h-.4c-.139 0-.365.052-.556.26-.191.208-.73.712-.73 1.734 0 1.022.747 2.009.851 2.147.104.138 1.47 2.245 3.562 3.146.498.215.887.344 1.192.441.503.16.96.137 1.32.083.402-.06 1.229-.503 1.402-.99.172-.487.172-.904.121-.991-.051-.087-.191-.139-.399-.243z" fill="#ffffff" style={{ fill: "#ffffff", stroke: "none" }} transform="scale(0.8) translate(3, 3)" />
   </svg>
 );
 
@@ -182,18 +182,6 @@ export const Footer = ({ addToast }) => {
               <span>Sangamner, Maharashtra, India</span>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* ── Trust badges ───────────────────────────── */}
-      <div className="border-t border-white/[0.06] py-5">
-        <div className="max-w-7xl mx-auto px-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-[10px] text-neutral-400 uppercase tracking-[0.14em] font-medium">
-          {["BIS 916 Hallmarked", "IGI Certified Diamonds", "Lifetime Exchange", "Free Insured Shipping", "Secure Payment"].map((badge) => (
-            <span key={badge} className="flex items-center gap-1.5">
-              <span className="w-1 h-1 rounded-full bg-gold-500 inline-block" />
-              {badge}
-            </span>
-          ))}
         </div>
       </div>
 
