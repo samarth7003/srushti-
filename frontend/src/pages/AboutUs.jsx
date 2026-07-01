@@ -22,7 +22,7 @@ export const AboutUs = () => {
   ];
 
   return (
-    <div className="bg-gold-50/20 dark:bg-luxury-black transition-colors duration-300 font-sans text-left">
+    <div className="bg-white dark:bg-luxury-black transition-colors duration-300 font-sans text-left">
       {/* 1. Page Header banner */}
       <section className="relative bg-stone-950 py-24 px-6 text-center text-white overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(197,168,128,0.1),transparent_60%)]"></div>
@@ -92,7 +92,7 @@ export const AboutUs = () => {
       </section>
 
       {/* 3. Core Values Grid */}
-      <section className="py-20 px-6 bg-stone-100 dark:bg-stone-900/50 border-y border-gold-200/10">
+      <section className="py-20 px-6 bg-ivory-100 dark:bg-stone-900/50 border-y border-gold-200/10">
         <div className="max-w-7xl mx-auto space-y-16">
           <div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
             <span className="text-gold-600 dark:text-gold-400 font-medium tracking-[0.2em] uppercase text-xs block text-center">
@@ -106,7 +106,7 @@ export const AboutUs = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {values.map((v, i) => (
-              <div key={i} className="bg-white dark:bg-luxury-charcoal p-8 rounded-3xl border border-gold-100/50 dark:border-stone-850/40 shadow-sm space-y-4 hover:shadow-lg transition-shadow">
+              <div key={i} className="bg-stone-50/70 dark:bg-luxury-charcoal p-8 rounded-3xl border border-gold-200/30 dark:border-stone-850/40 shadow-sm space-y-4 hover:shadow-lg transition-shadow">
                 <div className="p-3 bg-gold-50 dark:bg-stone-900/60 w-fit rounded-2xl border border-gold-200/20">
                   {v.icon}
                 </div>

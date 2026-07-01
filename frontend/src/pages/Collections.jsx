@@ -189,7 +189,7 @@ export const Collections = ({ addToast }) => {
                   setCurrentPage(1);
                 }}
                 placeholder="Search catalog..."
-                className="w-full bg-white dark:bg-stone-900 border border-black/10 dark:border-white/10 rounded-full py-1.5 pl-4 pr-10 text-[10.5px] focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
+                className="w-full bg-stone-50/70 border border-black/10 rounded-full py-1.5 pl-4 pr-10 text-[10.5px] focus:outline-none focus:bg-white focus:border-gold-500 text-luxury-black dark:text-white transition-all"
               />
               <Search size={11} className="absolute right-3.5 top-2.5 text-gray-400" />
             </div>
@@ -206,7 +206,7 @@ export const Collections = ({ addToast }) => {
                   className={`text-[8px] px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full border whitespace-nowrap transition-all duration-300 cursor-pointer font-bold tracking-wide uppercase ${
                     selectedCategory === cat
                       ? "bg-gold-500 text-stone-950 border-gold-500 shadow-sm"
-                      : "bg-white dark:bg-stone-900/60 border-black/05 dark:border-white/10 text-ink-600 dark:text-stone-300 hover:border-gold-400 hover:text-gold-600"
+                      : "bg-stone-50/70 dark:bg-stone-900/60 border-black/05 dark:border-white/10 text-ink-600 dark:text-stone-300 hover:border-gold-400 hover:text-gold-600"
                   }`}
                 >
                   {cat}
@@ -217,7 +217,7 @@ export const Collections = ({ addToast }) => {
             {/* Scrollable Advanced Filters row */}
             <div className="overflow-x-auto flex gap-1 pb-1.5 select-none scrollbar-none text-[8.5px]">
               {/* Metal Select Dropdown */}
-              <div className="bg-white dark:bg-stone-900 border border-black/05 dark:border-white/10 rounded-full px-2 py-0.5 flex items-center text-ink-900 dark:text-stone-200 shrink-0 font-bold uppercase tracking-wider">
+              <div className="bg-stone-50/70 dark:bg-stone-900 border border-black/05 dark:border-white/10 rounded-full px-2 py-0.5 flex items-center text-ink-900 dark:text-stone-200 shrink-0 font-bold uppercase tracking-wider">
                 <select
                   value={selectedMaterial}
                   onChange={(e) => {
@@ -235,7 +235,7 @@ export const Collections = ({ addToast }) => {
               </div>
 
               {/* Price Slider Input */}
-              <div className="bg-white dark:bg-stone-900 border border-black/05 dark:border-white/10 rounded-full px-2 py-0.5 flex items-center gap-1 text-ink-900 dark:text-stone-200 shrink-0 font-bold uppercase tracking-wider">
+              <div className="bg-stone-50/70 dark:bg-stone-900 border border-black/05 dark:border-white/10 rounded-full px-2 py-0.5 flex items-center gap-1 text-ink-900 dark:text-stone-200 shrink-0 font-bold uppercase tracking-wider">
                 <span>Max: ₹{(priceRange / 1000).toFixed(0)}K</span>
                 <input
                   type="range"
@@ -252,7 +252,7 @@ export const Collections = ({ addToast }) => {
               </div>
 
               {/* Stock Select Dropdown */}
-              <div className="bg-white dark:bg-stone-900 border border-black/05 dark:border-white/10 rounded-full px-2 py-0.5 flex items-center text-ink-900 dark:text-stone-200 shrink-0 font-bold uppercase tracking-wider">
+              <div className="bg-stone-50/70 dark:bg-stone-900 border border-black/05 dark:border-white/10 rounded-full px-2 py-0.5 flex items-center text-ink-900 dark:text-stone-200 shrink-0 font-bold uppercase tracking-wider">
                 <select
                   value={selectedStock}
                   onChange={(e) => {
@@ -268,7 +268,7 @@ export const Collections = ({ addToast }) => {
               </div>
 
               {/* Sort By Select Dropdown */}
-              <div className="bg-white dark:bg-stone-900 border border-black/05 dark:border-white/10 rounded-full px-2 py-0.5 flex items-center text-ink-900 dark:text-stone-200 shrink-0 font-bold uppercase tracking-wider">
+              <div className="bg-stone-50/70 dark:bg-stone-900 border border-black/05 dark:border-white/10 rounded-full px-2 py-0.5 flex items-center text-ink-900 dark:text-stone-200 shrink-0 font-bold uppercase tracking-wider">
                 <select
                   value={sortBy}
                   onChange={(e) => {
@@ -289,7 +289,7 @@ export const Collections = ({ addToast }) => {
               {/* Reset Filters Icon Button */}
               <button
                 onClick={resetFilters}
-                className="bg-white hover:bg-gold-100 dark:bg-stone-850 dark:hover:bg-stone-800 text-luxury-black dark:text-stone-300 px-2 py-0.5 rounded-full transition-all duration-300 cursor-pointer border border-black/05 dark:border-white/10 shrink-0 flex items-center justify-center"
+                className="bg-stone-50/70 hover:bg-gold-100 dark:bg-stone-850 dark:hover:bg-stone-800 text-luxury-black dark:text-stone-300 px-2 py-0.5 rounded-full transition-all duration-300 cursor-pointer border border-black/05 dark:border-white/10 shrink-0 flex items-center justify-center"
                 title="Reset Filters"
               >
                 <RefreshCw size={9} />
@@ -331,7 +331,7 @@ export const Collections = ({ addToast }) => {
                      setCurrentPage(1);
                    }}
                    placeholder="Search catalog by name or description..."
-                   className="w-full catalog-control text-xs py-3 pl-4 pr-10 focus:outline-none font-light text-luxury-black dark:text-white bg-white dark:bg-stone-900"
+                   className="w-full catalog-control text-xs py-3 pl-4 pr-10 focus:outline-none font-light text-luxury-black dark:text-white bg-stone-100/70 dark:bg-stone-900"
                  />
                  <Search size={14} className="absolute right-3.5 top-3.5 text-gray-400" />
                </div>

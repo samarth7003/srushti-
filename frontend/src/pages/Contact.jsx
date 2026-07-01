@@ -35,7 +35,7 @@ export const Contact = ({ addToast }) => {
   };
 
   return (
-    <div className="bg-gold-50/20 dark:bg-luxury-black transition-colors duration-300 font-sans text-left py-12 px-6">
+    <div className="bg-white dark:bg-luxury-black transition-colors duration-300 font-sans text-left py-12 px-6">
       <div className="max-w-7xl mx-auto space-y-12">
         {/* Page Header */}
         <div className="text-left space-y-2">
@@ -51,7 +51,7 @@ export const Contact = ({ addToast }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Left panel: Info cards */}
           <div className="lg:col-span-5">
-            <div className="bg-white dark:bg-luxury-charcoal p-4 sm:p-5 rounded-2xl border border-gold-100/50 dark:border-stone-850/40 shadow-sm space-y-4 h-full">
+            <div className="bg-stone-50/80 dark:bg-luxury-charcoal p-4 sm:p-5 rounded-2xl border border-gold-200/30 dark:border-stone-850/40 shadow-sm space-y-4 h-full">
               <h3 className="font-serif text-xl font-bold text-luxury-black dark:text-white border-b border-gold-100/10 dark:border-stone-800/20 pb-2">
                 Contact Us
               </h3>
@@ -123,7 +123,7 @@ export const Contact = ({ addToast }) => {
 
           {/* Right panel: Contact Form */}
           <div className="lg:col-span-7">
-            <div className="bg-white dark:bg-luxury-charcoal p-4 sm:p-5 rounded-2xl border border-gold-100/50 dark:border-stone-850/40 shadow-sm space-y-4 h-full">
+            <div className="bg-stone-50/80 dark:bg-luxury-charcoal p-4 sm:p-5 rounded-2xl border border-gold-200/30 dark:border-stone-850/40 shadow-sm space-y-4 h-full">
               <h3 className="font-serif text-xl font-bold text-luxury-black dark:text-white border-b border-gold-100/10 dark:border-stone-800/20 pb-2">
                 Send a Message
               </h3>
@@ -138,7 +138,7 @@ export const Contact = ({ addToast }) => {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Enter name"
-                      className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
+                      className="w-full bg-white dark:bg-stone-900 border border-gold-200/40 dark:border-stone-800 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
                     />
                   </div>
                   <div className="space-y-0.5">
@@ -149,7 +149,7 @@ export const Contact = ({ addToast }) => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter email"
-                      className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
+                      className="w-full bg-white dark:bg-stone-900 border border-gold-200/40 dark:border-stone-800 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
                     />
                   </div>
                   <div className="space-y-0.5">
@@ -159,7 +159,7 @@ export const Contact = ({ addToast }) => {
                       value={mobile}
                       onChange={(e) => setMobile(e.target.value)}
                       placeholder="10-digit number"
-                      className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
+                      className="w-full bg-white dark:bg-stone-900 border border-gold-200/40 dark:border-stone-800 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
                     />
                   </div>
                   <div className="space-y-0.5">
@@ -167,7 +167,7 @@ export const Contact = ({ addToast }) => {
                     <select
                       value={subject}
                       onChange={(e) => setSubject(e.target.value)}
-                      className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white font-medium"
+                      className="w-full bg-white dark:bg-stone-900 border border-gold-200/40 dark:border-stone-800 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white font-medium"
                     >
                       <option value="General Enquiry">General Enquiry</option>
                       <option value="Custom Order Consult">Bespoke Design / Custom Consultation</option>
@@ -184,7 +184,7 @@ export const Contact = ({ addToast }) => {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Details of your request..."
-                    className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white min-h-[75px]"
+                    className="w-full bg-white dark:bg-stone-900 border border-gold-200/40 dark:border-stone-800 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white min-h-[75px]"
                   />
                 </div>
 

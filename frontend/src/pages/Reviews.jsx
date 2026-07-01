@@ -108,7 +108,7 @@ export const Reviews = ({ addToast }) => {
   };
 
   return (
-    <div className="bg-gold-50/20 dark:bg-luxury-black transition-colors duration-300 font-sans text-left py-12 px-6">
+    <div className="bg-white dark:bg-luxury-black transition-colors duration-300 font-sans text-left py-12 px-6">
       <div className="max-w-5xl mx-auto space-y-12">
         {/* Page Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gold-100/10 pb-6">
@@ -133,7 +133,7 @@ export const Reviews = ({ addToast }) => {
         {showAddForm && (
           <form
             onSubmit={handleSubmitReview}
-            className="bg-white dark:bg-luxury-charcoal p-6 rounded-2xl border border-gold-400/30 shadow-lg space-y-4 animate-slide-up"
+            className="bg-stone-50/80 dark:bg-luxury-charcoal p-6 rounded-2xl border border-gold-400/30 shadow-lg space-y-4 animate-slide-up"
           >
             <h3 className="font-serif text-lg font-bold text-luxury-black dark:text-white border-b border-stone-100 dark:border-stone-850 pb-2">
               Share Your Srushti Experience
@@ -148,7 +148,7 @@ export const Reviews = ({ addToast }) => {
                   value={userName}
                   onChange={(e) => setUserName(e.target.value)}
                   placeholder="Enter name"
-                  className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
+                  className="w-full bg-white dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white"
                 />
               </div>
 
@@ -157,7 +157,7 @@ export const Reviews = ({ addToast }) => {
                 <select
                   value={selectedProductId}
                   onChange={(e) => setSelectedProductId(e.target.value)}
-                  className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white font-medium"
+                  className="w-full bg-white dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white font-medium"
                 >
                   {products.map((p) => (
                     <option key={p.id} value={p.id}>
@@ -193,29 +193,30 @@ export const Reviews = ({ addToast }) => {
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   placeholder="Share details of the design craftsmanship, fit, packaging..."
-                  className="w-full bg-stone-50 dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white min-h-[90px]"
+                  className="w-full bg-white dark:bg-stone-900 border border-gold-200/50 dark:border-stone-800 rounded-xl p-3 text-sm focus:outline-none focus:border-gold-500 text-luxury-black dark:text-white min-h-[90px]"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-[10px] font-semibold text-gray-500 uppercase">Profile Image (Optional)</label>
-                <div className="relative">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleAvatarChange}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                  />
-                  <div className="bg-stone-50 dark:bg-stone-900 border border-dashed border-gold-300/50 rounded-xl p-3 text-sm text-center text-gray-400 font-semibold hover:border-gold-500 min-h-[46px] flex items-center justify-center">
-                    {uploading ? "Uploading..." : avatarPreview ? "Change Image" : "Upload Picture"}
-                  </div>
+                <label className="text-[10px] font-semibold text-gray-500 uppercase">Avatar Picture</label>
+                <div className="flex items-center gap-4 h-11">
+                  <label className="bg-stone-200/70 hover:bg-stone-300 dark:bg-stone-800 text-luxury-black dark:text-stone-300 px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-colors">
+                    Upload Photo
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleAvatarChange}
+                      className="hidden"
+                    />
+                  </label>
+                  {uploading && <span className="text-xs text-gray-400 animate-pulse">Uploading...</span>}
+                  {avatarPreview && (
+                    <div className="flex items-center gap-1">
+                      <img src={avatarPreview} alt="Preview" className="w-8 h-8 rounded-full object-cover" />
+                      <Check className="text-emerald-500" size={14} />
+                    </div>
+                  )}
                 </div>
-                {avatarPreview && (
-                  <div className="flex gap-2 items-center mt-2 pl-2">
-                    <img src={avatarPreview} alt="Profile" className="w-10 h-10 rounded-full object-cover" />
-                    <span className="text-[10px] text-emerald-500 font-bold">Image loaded successfully!</span>
-                  </div>
-                )}
               </div>
             </div>
 
@@ -230,7 +231,7 @@ export const Reviews = ({ addToast }) => {
         )}
 
         {/* Reviews Overview Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white dark:bg-luxury-charcoal p-6 sm:p-8 rounded-3xl border border-gold-100/50 dark:border-stone-850/40 shadow-sm">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-stone-50/70 dark:bg-luxury-charcoal p-6 sm:p-8 rounded-3xl border border-gold-200/40 dark:border-stone-850/40 shadow-sm">
           {/* Average count */}
           <div className="md:col-span-4 text-center space-y-2">
             <span className="text-gray-400 uppercase tracking-widest text-xs font-semibold">Average Rating</span>
@@ -255,7 +256,7 @@ export const Reviews = ({ addToast }) => {
               <div key={star} className="flex items-center gap-3">
                 <span className="w-3 text-right font-semibold">{star}</span>
                 <Star size={12} className="text-amber-500 fill-amber-500 shrink-0" />
-                <div className="flex-grow bg-stone-100 dark:bg-stone-900 h-2.5 rounded-full overflow-hidden border border-stone-200/20">
+                <div className="flex-grow bg-white dark:bg-stone-900 h-2.5 rounded-full overflow-hidden border border-stone-200/20">
                   <div
                     className="h-full bg-gold-500 rounded-full"
                     style={{ width: `${getStarPercentage(star)}%` }}
@@ -279,7 +280,7 @@ export const Reviews = ({ addToast }) => {
             {reviews.map((r) => (
               <div
                 key={r.id}
-                className="bg-white dark:bg-luxury-charcoal p-6 rounded-2xl border border-gold-100/50 dark:border-stone-850/40 shadow-sm space-y-4"
+                className="bg-stone-50/60 dark:bg-luxury-charcoal p-6 rounded-2xl border border-gold-200/30 dark:border-stone-850/40 shadow-sm space-y-4"
               >
                 {/* Author row */}
                 <div className="flex items-center justify-between border-b border-stone-100 dark:border-stone-900/40 pb-3">
