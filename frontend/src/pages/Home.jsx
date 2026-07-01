@@ -342,9 +342,9 @@ export const Home = ({ addToast }) => {
             <ProductGridSkeleton count={5} />
           ) : (
             <>
-              <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-4">
-                {bestSellers.map((product, index) => (
-                  <div key={product.id} className={index >= 6 ? "hidden lg:block" : ""}>
+              <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4">
+                {bestSellers.map((product) => (
+                  <div key={product.id}>
                     <ProductCard product={product} addToast={addToast} compact />
                   </div>
                 ))}
@@ -497,9 +497,9 @@ export const Home = ({ addToast }) => {
             <ProductGridSkeleton count={5} />
           ) : (
             <>
-              <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-4">
-                {trendingProducts.map((product, index) => (
-                  <div key={product.id} className={index >= 6 ? "hidden lg:block" : ""}>
+              <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4">
+                {trendingProducts.map((product) => (
+                  <div key={product.id}>
                     <ProductCard product={product} addToast={addToast} compact />
                   </div>
                 ))}
