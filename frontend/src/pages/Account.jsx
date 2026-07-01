@@ -332,7 +332,7 @@ export const Account = ({ addToast }) => {
                 value={loginEmail}
                 onChange={(e) => setLoginEmail(e.target.value)}
                 placeholder="email@example.com"
-                className="w-full bg-stone-50 border border-black/10 rounded-lg p-2.5 text-xs focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 text-ink-900"
+                className="w-full bg-stone-50/60 border border-black/20 rounded-lg p-3 text-sm focus:outline-none focus:bg-white focus:border-gold-600 focus:ring-2 focus:ring-gold-500/10 text-ink-900 placeholder-black/40 transition-all"
               />
             </div>
             
@@ -345,12 +345,12 @@ export const Account = ({ addToast }) => {
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-stone-50 border border-black/10 rounded-lg p-2.5 pr-10 text-xs focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 text-ink-900"
+                  className="w-full bg-stone-50/60 border border-black/20 rounded-lg p-3 pr-10 text-sm focus:outline-none focus:bg-white focus:border-gold-600 focus:ring-2 focus:ring-gold-500/10 text-ink-900 placeholder-black/40 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowLoginPassword(!showLoginPassword)}
-                  className="absolute right-3 top-2.5 text-ink-400 hover:text-gold-600 transition-colors"
+                  className="absolute right-3 top-3 text-ink-400 hover:text-gold-600 transition-colors"
                 >
                   {showLoginPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
@@ -360,7 +360,7 @@ export const Account = ({ addToast }) => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-ink-900 hover:bg-gold-600 text-white hover:text-ink-950 font-bold uppercase tracking-wider py-3 rounded-lg text-[10px] transition-all duration-300 shadow-sm flex items-center justify-center cursor-pointer"
+              className="w-full bg-ink-900 hover:bg-gold-600 text-white hover:text-ink-950 font-bold uppercase tracking-wider py-3.5 rounded-lg text-[10px] transition-all duration-300 shadow-sm flex items-center justify-center cursor-pointer"
             >
               {loading ? "Verifying..." : "Sign In"}
             </button>
@@ -385,7 +385,7 @@ export const Account = ({ addToast }) => {
                 value={regName}
                 onChange={(e) => setRegName(e.target.value)}
                 placeholder="Full Name"
-                className="w-full bg-stone-50 border border-black/10 rounded-lg p-2.5 text-xs focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 text-ink-900"
+                className="w-full bg-stone-50/60 border border-black/20 rounded-lg p-3 text-sm focus:outline-none focus:bg-white focus:border-gold-600 focus:ring-2 focus:ring-gold-500/10 text-ink-900 placeholder-black/40 transition-all"
               />
             </div>
 
@@ -397,7 +397,7 @@ export const Account = ({ addToast }) => {
                 value={regEmail}
                 onChange={(e) => setRegEmail(e.target.value)}
                 placeholder="email@example.com"
-                className="w-full bg-stone-50 border border-black/10 rounded-lg p-2.5 text-xs focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 text-ink-900"
+                className="w-full bg-stone-50/60 border border-black/20 rounded-lg p-3 text-sm focus:outline-none focus:bg-white focus:border-gold-600 focus:ring-2 focus:ring-gold-500/10 text-ink-900 placeholder-black/40 transition-all"
               />
             </div>
             
@@ -410,12 +410,12 @@ export const Account = ({ addToast }) => {
                   value={regPassword}
                   onChange={(e) => setRegPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-stone-50 border border-black/10 rounded-lg p-2.5 pr-10 text-xs focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 text-ink-900"
+                  className="w-full bg-stone-50/60 border border-black/20 rounded-lg p-3 pr-10 text-sm focus:outline-none focus:bg-white focus:border-gold-600 focus:ring-2 focus:ring-gold-500/10 text-ink-900 placeholder-black/40 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowRegPassword(!showRegPassword)}
-                  className="absolute right-3 top-2.5 text-ink-400 hover:text-gold-600 transition-colors"
+                  className="absolute right-3 top-3 text-ink-400 hover:text-gold-600 transition-colors"
                 >
                   {showRegPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
@@ -431,12 +431,12 @@ export const Account = ({ addToast }) => {
                   value={regConfirmPassword}
                   onChange={(e) => setRegConfirmPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-stone-50 border border-black/10 rounded-lg p-2.5 pr-10 text-xs focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 text-ink-900"
+                  className="w-full bg-stone-50/60 border border-black/20 rounded-lg p-3 pr-10 text-sm focus:outline-none focus:bg-white focus:border-gold-600 focus:ring-2 focus:ring-gold-500/10 text-ink-900 placeholder-black/40 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-2.5 text-ink-400 hover:text-gold-600 transition-colors"
+                  className="absolute right-3 top-3 text-ink-400 hover:text-gold-600 transition-colors"
                 >
                   {showConfirmPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
