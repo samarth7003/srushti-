@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { loginUser, registerUser, getMe } from "../services/db";
 
 const AuthContext = createContext();
 
@@ -12,87 +13,95 @@ export const AuthProvider = ({ children }) => {
     return !!localStorage.getItem("srushti_is_admin");
   });
 
-  // Retrieve registered users from localStorage
-  const getRegisteredUsers = () => {
-    const users = localStorage.getItem("srushti_registered_users");
-    return users ? JSON.parse(users) : [];
-  };
+  const [authLoading, setAuthLoading] = useState(true);
 
-  // Guard login credentials for local testing
+  // Restore session on mount
+  useEffect(() => {
+    const restoreSession = async () => {
+      const token = localStorage.getItem("srushti_auth_token");
+      if (!token) {
+        setAuthLoading(false);
+        return;
+      }
+
+      try {
+        const profile = await getMe();
+        setUser(profile);
+        const adminFlag = profile.role === "admin";
+        setIsAdmin(adminFlag);
+        localStorage.setItem("srushti_auth_user", JSON.stringify(profile));
+        if (adminFlag) {
+          localStorage.setItem("srushti_is_admin", "true");
+        } else {
+          localStorage.removeItem("srushti_is_admin");
+        }
+      } catch (err) {
+        console.error("Session restoration failed, logging out:", err.message);
+        logout();
+      } finally {
+        setAuthLoading(false);
+      }
+    };
+    restoreSession();
+  }, []);
+
+  // Login
   const login = async (email, password) => {
-    // Check if Firebase auth is configured
-    // if (isFirebaseConfigured()) { ... await signInWithEmailAndPassword(auth, email, password) }
+    try {
+      const result = await loginUser({ email, password });
+      const { user: loggedUser, token } = result;
 
-    // Fallback: Admin Credentials
-    if (email === "admin@srushti.com" && password === "admin") {
-      const adminUser = { email, name: "Srushti Admin", role: "admin" };
-      setUser(adminUser);
-      setIsAdmin(true);
-      localStorage.setItem("srushti_auth_user", JSON.stringify(adminUser));
-      localStorage.setItem("srushti_is_admin", "true");
-      return adminUser;
-    }
-
-    // Fallback: Registered Customers
-    const users = getRegisteredUsers();
-    const customer = users.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
-    );
-
-    if (customer) {
-      const loggedUser = { email: customer.email, name: customer.name, role: "customer" };
       setUser(loggedUser);
-      setIsAdmin(false);
+      const adminFlag = loggedUser.role === "admin";
+      setIsAdmin(adminFlag);
+
+      localStorage.setItem("srushti_auth_token", token);
       localStorage.setItem("srushti_auth_user", JSON.stringify(loggedUser));
-      localStorage.removeItem("srushti_is_admin");
+      if (adminFlag) {
+        localStorage.setItem("srushti_is_admin", "true");
+      } else {
+        localStorage.removeItem("srushti_is_admin");
+      }
+
       return loggedUser;
+    } catch (err) {
+      throw new Error(err.message || "Invalid credentials.");
     }
-
-    throw new Error("Invalid credentials. Please register or check details.");
   };
 
+  // Signup/Register
   const signup = async (email, password, name) => {
-    // Check if Firebase auth is configured
-    // if (isFirebaseConfigured()) { ... await createUserWithEmailAndPassword(auth, email, password) }
+    try {
+      const result = await registerUser({ name, email, password });
+      const { user: newUser, token } = result;
 
-    const users = getRegisteredUsers();
-    const alreadyExists = users.some((u) => u.email.toLowerCase() === email.toLowerCase());
+      setUser(newUser);
+      setIsAdmin(false);
 
-    if (alreadyExists) {
-      throw new Error("An account with this email already exists.");
+      localStorage.setItem("srushti_auth_token", token);
+      localStorage.setItem("srushti_auth_user", JSON.stringify(newUser));
+      localStorage.removeItem("srushti_is_admin");
+
+      return newUser;
+    } catch (err) {
+      throw new Error(err.message || "Registration failed.");
     }
-
-    if (email.toLowerCase() === "admin@srushti.com") {
-      throw new Error("This email is reserved for administrators.");
-    }
-
-    const newUser = { email, password, name, role: "customer" };
-    users.push(newUser);
-    localStorage.setItem("srushti_registered_users", JSON.stringify(users));
-
-    // Log the user in immediately
-    const loggedUser = { email: newUser.email, name: newUser.name, role: "customer" };
-    setUser(loggedUser);
-    setIsAdmin(false);
-    localStorage.setItem("srushti_auth_user", JSON.stringify(loggedUser));
-    localStorage.removeItem("srushti_is_admin");
-    return loggedUser;
   };
 
+  // Logout
   const logout = async () => {
     setUser(null);
     setIsAdmin(false);
+    localStorage.removeItem("srushti_auth_token");
     localStorage.removeItem("srushti_auth_user");
     localStorage.removeItem("srushti_is_admin");
   };
 
-
   return (
-    <AuthContext.Provider value={{ user, isAdmin, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, isAdmin, authLoading, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );
-
 };
 
 export const useAuth = () => {

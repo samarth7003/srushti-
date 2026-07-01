@@ -2,11 +2,19 @@ const API_URL = "http://localhost:5000/api";
 
 // Helper to make API calls
 const apiCall = async (endpoint, options = {}) => {
+  const token = localStorage.getItem("srushti_auth_token");
+  const headers = {
+    "Content-Type": "application/json",
+    ...options.headers,
+  };
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   const response = await fetch(`${API_URL}${endpoint}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
     ...options,
+    headers,
   });
   if (!response.ok) {
     const err = await response.json();
@@ -14,6 +22,19 @@ const apiCall = async (endpoint, options = {}) => {
   }
   return response.json();
 };
+
+// Auth API endpoints
+export const registerUser = (userData) => apiCall("/auth/register", {
+  method: "POST",
+  body: JSON.stringify(userData),
+});
+
+export const loginUser = (credentials) => apiCall("/auth/login", {
+  method: "POST",
+  body: JSON.stringify(credentials),
+});
+
+export const getMe = () => apiCall("/auth/me");
 
 // Product CRUD functions
 export const getProducts = () => apiCall("/products");

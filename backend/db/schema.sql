@@ -6,11 +6,22 @@ DROP TABLE IF EXISTS order_items;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS users;
 
 -- 1. Categories Table
 CREATE TABLE categories (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- 1b. Users Table
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(50) DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 2. Products Table
@@ -170,3 +181,7 @@ INSERT INTO products (id, name, description, price, category, material, weight, 
  ARRAY['https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80'],
  ARRAY['Traditional Motif', 'Hallmarked 22K Gold', 'Handcrafted Stringing'], true, false);
 
+-- Insert Default Admin User
+INSERT INTO users (name, email, password_hash, role) VALUES
+('Srushti Admin', 'admin@srushti.com', '$2a$10$wO3Y1/0h4s2h1wz3B07/t.Z3eXh.5Lp.D7zK.x5291.Uj11d8p.D2', 'admin')
+ON CONFLICT (email) DO NOTHING;
