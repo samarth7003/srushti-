@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { getReviews, addReview, getProducts } from "../services/db";
+import { getReviews, addReview } from "../services/reviewApi";
+import { getProducts } from "../services/productApi";
 import { uploadImage } from "../services/storage";
 import { Star, MessageSquare, Plus, Check } from "lucide-react";
 

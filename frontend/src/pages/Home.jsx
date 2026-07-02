@@ -5,7 +5,8 @@ import {
   VolumeX, Volume2, Maximize2, Share2, ChevronLeft, ChevronRight,
   Gift, Truck, RotateCcw, BadgeCheck, MapPin, Heart
 } from "lucide-react";
-import { getProducts, getReviews } from "../services/db";
+import { getProducts } from "../services/productApi";
+import { getReviews } from "../services/reviewApi";
 import { ProductCard } from "../components/ProductCard";
 import { ProductGridSkeleton } from "../components/LoadingSkeleton";
 import { motion, AnimatePresence } from "framer-motion";
@@ -325,6 +326,50 @@ export const Home = ({ addToast }) => {
         </div>
       </section>
 
+      {/* ════════════════════════════════════════════
+          2b · EXCLUSIVE FIRST ORDER OFFER (Flipping Card)
+      ════════════════════════════════════════════ */}
+      <section className="pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div 
+          className="relative w-full rounded-3xl overflow-hidden shadow-xl bg-cover bg-center py-12 px-8 sm:px-12 md:px-16 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
+          style={{ 
+            backgroundImage: "linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.3) 100%), url('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1600&auto=format&fit=crop&q=80')" 
+          }}
+        >
+          <div className="relative z-10 space-y-3 max-w-xl text-white">
+            <span className="inline-block text-[10px] text-gold-300 font-bold uppercase tracking-[0.22em] bg-white/10 px-3.5 py-1 rounded-full border border-white/10 backdrop-blur-sm font-sans">
+              Welcome Offer
+            </span>
+            <h3 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-white animate-fade-in">
+              75% OFF
+            </h3>
+            <p className="text-sm sm:text-base font-light text-ink-200 leading-relaxed font-sans">
+              Experience handcrafted luxury. Get 75% off your very first purchase across selected premium collections.
+            </p>
+          </div>
+          
+          <div className="relative z-10 shrink-0 flex flex-col items-start md:items-end gap-3">
+            <div className="flex flex-col gap-1 text-white md:text-right">
+              <span className="text-[10px] text-gold-300 font-bold uppercase tracking-widest font-sans">
+                Use Coupon Code
+              </span>
+              <div className="bg-white/15 border border-white/20 px-6 py-3 rounded-2xl text-center font-bold tracking-widest text-2xl font-serif backdrop-blur-md">
+                SRUSHTI75
+              </div>
+              <span className="text-[10px] text-white/70 font-light font-sans mt-1">
+                *Apply at checkout step.
+              </span>
+            </div>
+            <Link 
+              to="/collections" 
+              className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-400 text-white font-semibold text-xs sm:text-sm uppercase tracking-widest px-6 py-3 rounded-full transition-all duration-300 shadow-md hover:-translate-y-0.5 font-sans"
+            >
+              Shop Now <ArrowRight size={14} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <div className="section-divider" />
 
       {/* ════════════════════════════════════════════
@@ -631,22 +676,22 @@ export const Home = ({ addToast }) => {
       {/* ════════════════════════════════════════════
           7 · TRUST CENTER
       ════════════════════════════════════════════ */}
-      <section className="py-12 sm:py-16 bg-ink-950">
+      <section className="py-12 sm:py-16 bg-ivory-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-10">
             <span className="section-kicker">Our Promise</span>
-            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-white">Quality You Can Trust</h2>
-            <div className="h-px w-12 bg-gold-500 mx-auto mt-3" />
+            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-ink-900">Quality You Can Trust</h2>
+            <div className="h-px w-12 bg-gold-400 mx-auto mt-3" />
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
             {trustItems.map((t, i) => (
-              <div key={i} className="bg-white/[0.04] border border-white/[0.07] rounded-2xl p-5 sm:p-6 flex flex-col items-center text-center gap-3 hover:bg-white/[0.07] transition-colors">
+              <div key={i} className="bg-white border border-ink-200/50 rounded-2xl p-5 sm:p-6 flex flex-col items-center text-center gap-3 hover:border-gold-400 hover:shadow-md transition-all duration-300">
                 <div className="w-12 h-12 rounded-full bg-gold-500/10 border border-gold-500/20 flex items-center justify-center">
                   {t.icon}
                 </div>
-                <h3 className="text-xs sm:text-sm font-bold text-gold-200 uppercase tracking-wider font-sans">{t.title}</h3>
-                <p className="text-[10px] sm:text-xs text-white/40 font-light leading-relaxed font-sans">{t.desc}</p>
+                <h3 className="text-xs sm:text-sm font-bold text-ink-900 uppercase tracking-wider font-sans">{t.title}</h3>
+                <p className="text-[10px] sm:text-xs text-ink-500 font-light leading-relaxed font-sans">{t.desc}</p>
               </div>
             ))}
           </div>

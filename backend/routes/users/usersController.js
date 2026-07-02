@@ -1,12 +1,16 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import db from "../db/db.js";
+import { getUserByEmailDb, getUserByIdDb, createUserDb } from "./usersSqlc.js";
 
 // Helper to generate JWT token (valid for 7 days)
 const generateToken = (user) => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret && process.env.NODE_ENV === "production") {
+    throw new Error("JWT_SECRET is missing in production environment");
+  }
   return jwt.sign(
     { id: user.id, name: user.name, email: user.email, role: user.role },
-    process.env.JWT_SECRET || "srushti_secret_jwt_key_2026",
+    secret || "srushti_secret_jwt_key_2026",
     { expiresIn: "7d" }
   );
 };
@@ -23,8 +27,8 @@ export const register = async (req, res) => {
     const emailLower = email.trim().toLowerCase();
 
     // Check if email already registered
-    const { rows: existing } = await db.query("SELECT * FROM users WHERE email = $1", [emailLower]);
-    if (existing.length > 0) {
+    const existing = await getUserByEmailDb(emailLower);
+    if (existing) {
       return res.status(400).json({ error: "An account with this email already exists." });
     }
 
@@ -38,12 +42,7 @@ export const register = async (req, res) => {
     const hash = await bcrypt.hash(password, salt);
 
     // Insert user and return credentials (role defaults to 'customer')
-    const { rows } = await db.query(
-      "INSERT INTO users (name, email, password_hash, role) VALUES ($1, $2, $3, 'customer') RETURNING id, name, email, role",
-      [name.trim(), emailLower, hash]
-    );
-
-    const user = rows[0];
+    const user = await createUserDb(name.trim(), emailLower, hash);
     const token = generateToken(user);
 
     res.status(201).json({ user, token });
@@ -65,12 +64,10 @@ export const login = async (req, res) => {
     const emailLower = email.trim().toLowerCase();
 
     // Fetch user from database
-    const { rows } = await db.query("SELECT * FROM users WHERE email = $1", [emailLower]);
-    if (rows.length === 0) {
+    const user = await getUserByEmailDb(emailLower);
+    if (!user) {
       return res.status(401).json({ error: "Invalid email or password." });
     }
-
-    const user = rows[0];
 
     // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password_hash);
@@ -98,11 +95,11 @@ export const login = async (req, res) => {
 // Get current authenticated user profile
 export const getMe = async (req, res) => {
   try {
-    const { rows } = await db.query("SELECT id, name, email, role, created_at FROM users WHERE id = $1", [req.user.id]);
-    if (rows.length === 0) {
+    const user = await getUserByIdDb(req.user.id);
+    if (!user) {
       return res.status(404).json({ error: "User profile not found." });
     }
-    res.json(rows[0]);
+    res.json(user);
   } catch (error) {
     console.error("Get profile error:", error);
     res.status(500).json({ error: "Failed to retrieve user profile." });

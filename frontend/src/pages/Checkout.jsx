@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { createOrder } from "../services/db";
+import { createOrder } from "../services/orderApi";
 import { uploadImage } from "../services/storage";
 import { ProductImage } from "../components/ProductImage";
 import { ShieldCheck, QrCode, CreditCard, ChevronRight, CheckCircle2 } from "lucide-react";

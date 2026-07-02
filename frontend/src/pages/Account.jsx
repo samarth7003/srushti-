@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
-import { getOrders } from "../services/db";
+import { getOrders } from "../services/orderApi";
 import { ProductImage } from "../components/ProductImage";
 import {
   User,

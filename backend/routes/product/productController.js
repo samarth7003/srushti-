@@ -1,4 +1,4 @@
-import * as db from "../db/db.js";
+import { getProductsDb, addProductDb, updateProductDb, deleteProductDb } from "./productSqlc.js";
 
 const mapProductToFrontend = (row) => ({
   id: row.id,
@@ -21,8 +21,8 @@ const mapProductToFrontend = (row) => ({
 // GET all products
 export const getProducts = async (req, res) => {
   try {
-    const { rows } = await db.query("SELECT * FROM products ORDER BY created_at DESC");
-    res.json(rows.map(mapProductToFrontend));
+    const products = await getProductsDb();
+    res.json(products.map(mapProductToFrontend));
   } catch (error) {
     console.error("Error fetching products", error);
     res.status(500).json({ error: "Failed to fetch products" });
@@ -38,17 +38,11 @@ export const addProduct = async (req, res) => {
     const prodRating = parseFloat(rating) || 5.0;
     const prodReviewsCount = parseInt(reviewsCount) || 0;
     
-    const queryText = `
-      INSERT INTO products (id, name, description, price, category, material, weight, availability, stock, rating, reviews_count, images, features, is_new, is_bestseller)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
-      RETURNING *
-    `;
-    
-    const { rows } = await db.query(queryText, [
+    const product = await addProductDb(
       prodId, name, description, price, category, material, weight, availability || "In Stock", stock || 0, prodRating, prodReviewsCount, images || [], features || [], isNew || false, isBestSeller || false
-    ]);
+    );
     
-    res.status(201).json(mapProductToFrontend(rows[0]));
+    res.status(201).json(mapProductToFrontend(product));
   } catch (error) {
     console.error("Error adding product", error);
     res.status(500).json({ error: "Failed to add product" });
@@ -61,22 +55,15 @@ export const updateProduct = async (req, res) => {
     const { id } = req.params;
     const { name, description, price, category, material, weight, availability, stock, rating, reviewsCount, images, features, isNew, isBestSeller } = req.body;
     
-    const queryText = `
-      UPDATE products 
-      SET name = $1, description = $2, price = $3, category = $4, material = $5, weight = $6, availability = $7, stock = $8, rating = $9, reviews_count = $10, images = $11, features = $12, is_new = $13, is_bestseller = $14
-      WHERE id = $15
-      RETURNING *
-    `;
+    const product = await updateProductDb(
+      id, name, description, price, category, material, weight, availability, stock, rating, reviewsCount, images, features, isNew, isBestSeller
+    );
     
-    const { rows } = await db.query(queryText, [
-      name, description, price, category, material, weight, availability, stock, rating, reviewsCount, images, features, isNew, isBestSeller, id
-    ]);
-    
-    if (rows.length === 0) {
+    if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
     
-    res.json(mapProductToFrontend(rows[0]));
+    res.json(mapProductToFrontend(product));
   } catch (error) {
     console.error("Error updating product", error);
     res.status(500).json({ error: "Failed to update product" });
@@ -87,9 +74,9 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { rowCount } = await db.query("DELETE FROM products WHERE id = $1", [id]);
+    const success = await deleteProductDb(id);
     
-    if (rowCount === 0) {
+    if (!success) {
       return res.status(404).json({ error: "Product not found" });
     }
     

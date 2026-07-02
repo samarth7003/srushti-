@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getProducts, getCategories } from "../services/db";
+import { getProducts } from "../services/productApi";
+import { getCategories } from "../services/categoryApi";
 import { ProductCard } from "../components/ProductCard";
 import { ProductGridSkeleton } from "../components/LoadingSkeleton";
 import { useCart } from "../context/CartContext";

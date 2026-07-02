@@ -1,17 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import {
-  getProducts,
-  addProduct,
-  updateProduct,
-  deleteProduct,
-  getOrders,
-  updateOrderStatus,
-  approveUpiPayment,
-  getCategories,
-  addCategory,
-  deleteCategory
-} from "../services/db";
+import { getProducts, addProduct, updateProduct, deleteProduct } from "../services/productApi";
+import { getOrders, updateOrderStatus, approveUpiPayment } from "../services/orderApi";
+import { getCategories, addCategory, deleteCategory } from "../services/categoryApi";
 import { uploadImage } from "../services/storage";
 import {
   TrendingUp,

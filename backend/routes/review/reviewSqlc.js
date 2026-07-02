@@ -1,31 +1,21 @@
-import pool, * as db from "../db/db.js";
+import pool from "../../config/database.js";
 
-// GET all reviews
-export const getReviews = async (req, res) => {
-  try {
-    const { rows } = await db.query("SELECT * FROM reviews ORDER BY created_at DESC");
-    res.json(rows.map(r => ({
-      id: r.id,
-      productId: r.product_id,
-      productName: r.product_name,
-      customerName: r.customer_name,
-      rating: parseInt(r.rating),
-      comment: r.comment,
-      date: r.created_at.toISOString().split("T")[0]
-    })));
-  } catch (error) {
-    console.error("Error fetching reviews", error);
-    res.status(500).json({ error: "Failed to fetch reviews" });
-  }
+/**
+ * Fetch all reviews ordered by created_at DESC
+ * @returns {Promise<object[]>}
+ */
+export const getReviewsDb = async () => {
+  const { rows } = await pool.query("SELECT * FROM reviews ORDER BY created_at DESC");
+  return rows;
 };
 
-// POST add a review
-export const addReview = async (req, res) => {
+/**
+ * Add a new review and update average product rating within a database transaction
+ * @returns {Promise<object>}
+ */
+export const addReviewDb = async (reviewId, productId, productName, customerName, rating, comment) => {
   const client = await pool.connect();
   try {
-    const { productId, productName, customerName, rating, comment } = req.body;
-    const reviewId = "r_" + Date.now();
-    
     await client.query("BEGIN");
     
     // 1. Insert review
@@ -54,21 +44,10 @@ export const addReview = async (req, res) => {
     }
     
     await client.query("COMMIT");
-    
-    const r = reviewResult.rows[0];
-    res.status(201).json({
-      id: r.id,
-      productId: r.product_id,
-      productName: r.product_name,
-      customerName: r.customer_name,
-      rating: parseInt(r.rating),
-      comment: r.comment,
-      date: r.created_at.toISOString().split("T")[0]
-    });
+    return reviewResult.rows[0];
   } catch (error) {
     await client.query("ROLLBACK");
-    console.error("Error adding review", error);
-    res.status(500).json({ error: "Failed to add review" });
+    throw error;
   } finally {
     client.release();
   }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { getOrders } from "../services/db";
+import { getOrders } from "../services/orderApi";
 import { ProductImage } from "../components/ProductImage";
 import { Search, Clock, CheckCircle2, Package, Truck, Smile, ShieldAlert } from "lucide-react";
 

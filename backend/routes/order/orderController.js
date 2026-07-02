@@ -1,40 +1,9 @@
-import pool, * as db from "../db/db.js";
+import { getOrdersDb, createOrderDb, getOrderByIdDb, updateOrderStatusDb, getOrderItemsDb } from "./orderSqlc.js";
 
 // GET all orders
 export const getOrders = async (req, res) => {
   try {
-    const ordersResult = await db.query("SELECT * FROM orders ORDER BY created_at DESC");
-    const orders = ordersResult.rows;
-    
-    const ordersWithItems = await Promise.all(orders.map(async (order) => {
-      const itemsResult = await db.query("SELECT * FROM order_items WHERE order_id = $1", [order.id]);
-      return {
-        id: order.id,
-        customerName: order.customer_name,
-        mobile: order.mobile,
-        address: order.address,
-        city: order.city,
-        pincode: order.pincode,
-        paymentMethod: order.payment_method,
-        paymentStatus: order.payment_status,
-        orderStatus: order.order_status,
-        subtotal: parseFloat(order.subtotal),
-        tax: parseFloat(order.tax),
-        delivery: parseFloat(order.delivery),
-        total: parseFloat(order.total),
-        utr: order.utr,
-        screenshot: order.screenshot,
-        date: order.created_at,
-        items: itemsResult.rows.map(item => ({
-          id: item.product_id,
-          name: item.name,
-          price: parseFloat(item.price),
-          quantity: item.quantity,
-          images: item.images || []
-        }))
-      };
-    }));
-    
+    const ordersWithItems = await getOrdersDb();
     res.json(ordersWithItems);
   } catch (error) {
     console.error("Error fetching orders", error);
@@ -44,47 +13,16 @@ export const getOrders = async (req, res) => {
 
 // POST create an order
 export const createOrder = async (req, res) => {
-  const client = await pool.connect();
   try {
     const { customerName, mobile, address, city, pincode, paymentMethod, paymentStatus, items, subtotal, tax, delivery, total, utr, screenshot } = req.body;
     
     const orderId = "ORD-" + Math.floor(1000 + Math.random() * 9000);
     const orderStatus = "Order Placed";
     
-    await client.query("BEGIN");
+    const order = await createOrderDb({
+      orderId, customerName, mobile, address, city, pincode, paymentMethod, paymentStatus, orderStatus, items, subtotal, tax, delivery, total, utr, screenshot
+    });
     
-    // 1. Insert order
-    const insertOrderQuery = `
-      INSERT INTO orders (id, customer_name, mobile, address, city, pincode, payment_method, payment_status, order_status, subtotal, tax, delivery, total, utr, screenshot)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
-      RETURNING *
-    `;
-    const orderResult = await client.query(insertOrderQuery, [
-      orderId, customerName, mobile, address, city, pincode, paymentMethod, paymentStatus, orderStatus, subtotal, tax, delivery, total, utr || "", screenshot || ""
-    ]);
-    
-    // 2. Insert items and update product stock
-    for (const item of items) {
-      const insertItemQuery = `
-        INSERT INTO order_items (order_id, product_id, name, price, quantity, images)
-        VALUES ($1, $2, $3, $4, $5, $6)
-      `;
-      await client.query(insertItemQuery, [
-        orderId, item.id, item.name, item.price, item.quantity, item.images || []
-      ]);
-      
-      const updateStockQuery = `
-        UPDATE products 
-        SET stock = GREATEST(0, stock - $1),
-            availability = CASE WHEN GREATEST(0, stock - $1) = 0 THEN 'Out of Stock' ELSE availability END
-        WHERE id = $2
-      `;
-      await client.query(updateStockQuery, [item.quantity, item.id]);
-    }
-    
-    await client.query("COMMIT");
-    
-    const order = orderResult.rows[0];
     const createdOrder = {
       id: order.id,
       customerName: order.customer_name,
@@ -107,11 +45,8 @@ export const createOrder = async (req, res) => {
     
     res.status(201).json(createdOrder);
   } catch (error) {
-    await client.query("ROLLBACK");
     console.error("Error creating order", error);
     res.status(500).json({ error: "Failed to create order" });
-  } finally {
-    client.release();
   }
 };
 
@@ -122,21 +57,20 @@ export const updateOrderStatus = async (req, res) => {
     const { orderStatus } = req.body;
     
     // Fetch current order to see payment method
-    const orderCheck = await db.query("SELECT * FROM orders WHERE id = $1", [id]);
-    if (orderCheck.rows.length === 0) {
+    const currentOrder = await getOrderByIdDb(id);
+    if (!currentOrder) {
       return res.status(404).json({ error: "Order not found" });
     }
-    const currentOrder = orderCheck.rows[0];
     
     let updateQuery = "UPDATE orders SET order_status = $1 WHERE id = $2 RETURNING *";
+    let params = [orderStatus, id];
     
     if (orderStatus === "Delivered" && currentOrder.payment_method === "Cash On Delivery") {
       updateQuery = "UPDATE orders SET order_status = $1, payment_status = 'Paid' WHERE id = $2 RETURNING *";
     }
     
-    const { rows } = await db.query(updateQuery, [orderStatus, id]);
-    const order = rows[0];
-    const itemsResult = await db.query("SELECT * FROM order_items WHERE order_id = $1", [id]);
+    const order = await updateOrderStatusDb(updateQuery, params);
+    const items = await getOrderItemsDb(id);
     
     res.json({
       id: order.id,
@@ -155,7 +89,7 @@ export const updateOrderStatus = async (req, res) => {
       utr: order.utr,
       screenshot: order.screenshot,
       date: order.created_at,
-      items: itemsResult.rows.map(item => ({
+      items: items.map(item => ({
         id: item.product_id,
         name: item.name,
         price: parseFloat(item.price),
@@ -173,17 +107,14 @@ export const updateOrderStatus = async (req, res) => {
 export const approveUpiPayment = async (req, res) => {
   try {
     const { id } = req.params;
-    const { rows } = await db.query(
-      "UPDATE orders SET payment_status = 'Paid', order_status = 'Confirmed' WHERE id = $1 RETURNING *",
-      [id]
-    );
+    const updateQuery = "UPDATE orders SET payment_status = 'Paid', order_status = 'Confirmed' WHERE id = $1 RETURNING *";
+    const order = await updateOrderStatusDb(updateQuery, [id]);
     
-    if (rows.length === 0) {
+    if (!order) {
       return res.status(404).json({ error: "Order not found" });
     }
     
-    const order = rows[0];
-    const itemsResult = await db.query("SELECT * FROM order_items WHERE order_id = $1", [id]);
+    const items = await getOrderItemsDb(id);
     
     res.json({
       id: order.id,
@@ -202,7 +133,7 @@ export const approveUpiPayment = async (req, res) => {
       utr: order.utr,
       screenshot: order.screenshot,
       date: order.created_at,
-      items: itemsResult.rows.map(item => ({
+      items: items.map(item => ({
         id: item.product_id,
         name: item.name,
         price: parseFloat(item.price),
